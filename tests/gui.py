@@ -5,7 +5,7 @@ root = tk.Tk()
 root.geometry("1600x900")
 root.title("FOCUS")
 
-testImg = tk.PhotoImage(file="test200x200.png")
+testImg = tk.PhotoImage(file="./content/test200x200.png")
 
 # Grid Layout: 2x2
 root.rowconfigure(0, weight=1)
