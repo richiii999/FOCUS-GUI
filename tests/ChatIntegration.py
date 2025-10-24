@@ -16,14 +16,14 @@ Side2 = tk.Frame(root, width=400, height=400, bg="skyblue", relief='ridge', bord
 Side2Label = tk.Label(Side2, text="Chat Window", bg="skyblue")
 
 # Chat components inside Side2
-chat_area = tk.Text(Side2, wrap="word", height=15, width=40, bg="white", fg="black", state=tk.DISABLED)
+chat_area = tk.Text(Side2, wrap="word", height=15, width=40, bg="white", fg="black", state=tk.DISABLED, font=("Arial", 16, "bold"))
 chat_area.grid(row=0, columnspan=2, sticky="news")
 
-message_input = tk.Entry(Side2, width=40, bg="lightgray")
+message_input = tk.Entry(Side2, width=40, bg="lightgray", font=("Arial", 16, "bold"))
 message_input.grid(row=1, padx=5, pady=5, column=0, sticky="news")
 
 # Using right arrow Unicode for the "Send" button
-send_button = tk.Button(Side2, text="-->", width=3, command=lambda: send_message(message_input.get()))
+send_button = tk.Button(Side2, text="-->", width=5, font=("Arial", 16, "bold"), command=lambda: send_message(message_input.get()))
 send_button.grid(row=1, column=1, padx=5, pady=5, sticky="news")
 
 # Big Image frame
