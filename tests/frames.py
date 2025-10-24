@@ -22,33 +22,33 @@ BigImgLabel = tk.Label(BigImg, text="BigImgLabel", bg="grey")
 ## Grid placement
 # Root
 root.columnconfigure(0, weight=2)
-root.rowconfigure(0, weight=2)
-root.columnconfigure(2, weight=1)
-root.rowconfigure(2, weight=1)
+root.rowconfigure(0, weight=1)
+root.columnconfigure(1, weight=1)
+root.rowconfigure(1, weight=1)
 
 # BigImg
-BigImg.grid(column=0, row=0, columnspan=1, rowspan=1, sticky='news')
+BigImg.grid(column=0, row=0, columnspan=1, rowspan=2, sticky='news')
 BigImg.columnconfigure(0, weight=2)
 BigImg.rowconfigure(0, weight=2)
 BigImgLabel.grid(column=0, row=0)
 
 # Side1
-Side1.grid(column=2, row=0, sticky='news')
+Side1.grid(column=1, row=0, sticky='news')
 Side1.columnconfigure(0, weight=1)
 Side1.rowconfigure(0, weight=1)
 
 Side1Label.grid(column=0, row=0)
-Side1Body.grid(column=0, row=1, sticky='news')
+Side1Body.grid(column=0, row=1)
 Side1Body.columnconfigure(0, weight=1)
 Side1Body.rowconfigure(0, weight=1)
 
 # Side2
-Side2.grid(column=2, row=1, sticky='news')
+Side2.grid(column=1, row=1, sticky='news')
 Side2.columnconfigure(0, weight=1)
 Side2.rowconfigure(0, weight=1)
 
-Side2Label.grid(column=0, row=0, sticky='news')
-Side2Body.grid(column=0, row=1, sticky='news')
+Side2Label.grid(column=0, row=0)
+Side2Body.grid(column=0, row=1)
 Side2Body.columnconfigure(0, weight=1)
 Side2Body.rowconfigure(0, weight=1)
 
