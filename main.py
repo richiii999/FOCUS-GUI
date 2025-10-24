@@ -1,1 +1,1 @@
-from tests import PDFIntegration
+from tests import ChatIntegration
