@@ -155,7 +155,7 @@ class PDFViewer(tk.Frame):
 
 # Main Application Layout
 root = tk.Tk()
-root.title("Image Editor and PDF Viewer")
+
 
 # Tools frame
 tools_frame = tk.Frame(root, width=200, height=400, bg="skyblue")
