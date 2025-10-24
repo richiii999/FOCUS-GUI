@@ -6,17 +6,17 @@ root.title("FOCUS")
 
 ## Making the frames
 # Side1 Frame
-Side1 = tk.Frame(root, width=200, height=200, bg="skyblue", relief='ridge', borderwidth=5)
+Side1 = tk.Frame(root, width=400, height=400, bg="skyblue", relief='ridge', borderwidth=5)
 Side1Label = tk.Label(Side1, text="Side1Label", bg="skyblue")
 Side1Body = tk.Label(Side1, text="Side1Body")
 
 # Side2 Frame
-Side2 = tk.Frame(root, width=200, height=200, bg="skyblue", relief='ridge', borderwidth=5)
+Side2 = tk.Frame(root, width=400, height=400, bg="skyblue", relief='ridge', borderwidth=5)
 Side2Label = tk.Label(Side2, text="Side2Label", bg="skyblue")
 Side2Body = tk.Label(Side2, text="Side2Body")
 
 # Big Image frame
-BigImg = tk.Frame(root, width=400, height=400, bg="grey", relief='ridge', borderwidth=5)
+BigImg = tk.Frame(root, width=800, height=800, bg="grey", relief='ridge', borderwidth=5)
 BigImgLabel = tk.Label(BigImg, text="BigImgLabel", bg="grey")
 
 ## Grid placement
