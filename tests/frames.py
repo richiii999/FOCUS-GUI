@@ -4,56 +4,53 @@ from tkinter import ttk
 root = tk.Tk()
 root.title("FOCUS")
 
-testImg = tk.PhotoImage(file="./content/testFull.png")
-
+## Making the frames
 # Side1 Frame
-Side1 = tk.Frame(root, width=200, height=200, bg="skyblue")
+Side1 = tk.Frame(root, width=200, height=200, bg="skyblue", relief='ridge', borderwidth=5)
 Side1Label = tk.Label(Side1, text="Side1Label", bg="skyblue")
-Side1Body = tk.Label(Side1, text="111")
+Side1Body = tk.Label(Side1, text="Side1Body")
 
 # Side2 Frame
-Side2 = tk.Frame(root, width=200, height=200, bg="skyblue")
+Side2 = tk.Frame(root, width=200, height=200, bg="skyblue", relief='ridge', borderwidth=5)
 Side2Label = tk.Label(Side2, text="Side2Label", bg="skyblue")
-Side2Img = tk.Label(Side2, text="222")
+Side2Body = tk.Label(Side2, text="Side2Body")
 
 # Big Image frame
-BigImg = tk.Frame(root, width=600, height=600, bg="grey")
-display_image = testImg.subsample(2, 2)
-BigImgText = tk.Label(BigImg, text="Edited Image", bg="grey", fg="white")
-BigImgCanv = tk.Canvas(BigImg)
-BigImgCanv.create_image(0,0, image=display_image, anchor='nw')
+BigImg = tk.Frame(root, width=400, height=400, bg="grey", relief='ridge', borderwidth=5)
+BigImgLabel = tk.Label(BigImg, text="BigImgLabel", bg="grey")
 
+## Grid placement
+# Root
+root.columnconfigure(0, weight=2)
+root.rowconfigure(0, weight=2)
+root.columnconfigure(2, weight=1)
+root.rowconfigure(2, weight=1)
 
+# BigImg
+BigImg.grid(column=0, row=0, columnspan=1, rowspan=1, sticky='news')
+BigImg.columnconfigure(0, weight=2)
+BigImg.rowconfigure(0, weight=2)
+BigImgLabel.grid(column=0, row=0)
 
-# Grid placement
-root.columnconfigure(0, weight=3)
-root.rowconfigure(0, weight=3)
-root.columnconfigure(3, weight=1)
-root.rowconfigure(3, weight=1)
-
-BigImg.grid(column=0, row=0, columnspan=3, rowspan=3, sticky='news')
-BigImg.columnconfigure(0, weight=3)
-BigImg.rowconfigure(0, weight=3)
-
-BigImgText.grid(column=0, row=0)
-BigImgCanv.grid(column=0, row=1)
-
-Side1.grid(column=3, row=0, sticky='news')
+# Side1
+Side1.grid(column=2, row=0, sticky='news')
 Side1.columnconfigure(0, weight=1)
 Side1.rowconfigure(0, weight=1)
 
 Side1Label.grid(column=0, row=0)
-
 Side1Body.grid(column=0, row=1, sticky='news')
 Side1Body.columnconfigure(0, weight=1)
 Side1Body.rowconfigure(0, weight=1)
 
-Side2.grid(column=3, row=1)
+# Side2
+Side2.grid(column=2, row=1, sticky='news')
 Side2.columnconfigure(0, weight=1)
 Side2.rowconfigure(0, weight=1)
 
-Side2Label.grid(column=0, row=0)
-Side2Img.grid(column=0, row=1)
+Side2Label.grid(column=0, row=0, sticky='news')
+Side2Body.grid(column=0, row=1, sticky='news')
+Side2Body.columnconfigure(0, weight=1)
+Side2Body.rowconfigure(0, weight=1)
 
 
 root.mainloop()
