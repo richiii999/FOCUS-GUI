@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
-import fitz  # PyMuPDF
+import fitz # PyMuPDF
 import threading
 from PIL import Image, ImageTk  # For handling images in Tkinter
 

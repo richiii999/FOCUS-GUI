@@ -1,19 +1,41 @@
-from tkinter import *
+import tkinter as tk
 from tkinter import ttk
 
-root = Tk()
+root = tk.Tk()
+root.title("FOCUS")
 
-l =ttk.Label(root, width=30, padding=5, text="Starting...", )
+testImg = tk.PhotoImage(file="./content/testFull.png")
 
-def changeText(s): l.configure(text=s) # Change the text 
+# Side1 Frame
+Side1 = tk.Frame(root, width=200, height=200, bg="skyblue")
+Side1Text = tk.Label(Side1, text="Side1", bg="skyblue")
+thumbnail_image1 = testImg.subsample(6, 6)
+Side1Img = tk.Label(Side1, image=thumbnail_image1)
 
-l.grid()
+# Side2 Frame
+Side2 = tk.Frame(root, width=200, height=200, bg="skyblue")
+Side2Text = tk.Label(Side2, text="Side2", bg="skyblue")
+thumbnail_image2 = testImg.subsample(6, 6)
+Side2Img = tk.Label(Side2, image=thumbnail_image2)
 
-l.bind('<Enter>', lambda e: l.configure(text='Moved mouse inside'))
-l.bind('<Leave>', lambda e: l.configure(text='Moved mouse outside'))
-l.bind('<ButtonPress-1>', lambda e: l.configure(text='Clicked left mouse button'))
-l.bind('<3>', lambda e: l.configure(text='Clicked third mouse button'))
-l.bind('<Double-1>', lambda e: l.configure(text='Double clicked'))
-l.bind('<B3-Motion>', lambda e: l.configure(text=f'third button drag to {e.x},{e.y}'))
+# Big Image frame
+BigImg = tk.Frame(root, width=400, height=400, bg="grey")
+display_image = testImg.subsample(2, 2)
+BigImgText = tk.Label(BigImg, text="Edited Image", bg="grey", fg="white")
+BigImgImg = tk.Label(BigImg, image=display_image)
+
+# Grid placement
+BigImg.grid(column=0, row=0, columnspan=3, rowspan=2)
+BigImgText.grid(column=0, row=0)
+BigImgImg.grid(column=0, row=1)
+
+Side1.grid(column=3, row=0)
+Side1Text.grid(column=0, row=0)
+Side1Img.grid(column=0, row=1)
+
+Side2.grid(column=3, row=1)
+Side2Text.grid(column=0, row=0)
+Side2Img.grid(column=0, row=1)
+
 
 root.mainloop()
