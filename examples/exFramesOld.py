@@ -4,7 +4,7 @@ from tkinter import ttk
 root = tk.Tk()
 root.title("Image Editor")
 
-image = tk.PhotoImage(file="./content/testFull.png")
+image = tk.PhotoImage(file="../content/testFull.png")
 
 # Tools frame
 tools_frame = tk.Frame(root, width=200, height=400, bg="skyblue")
