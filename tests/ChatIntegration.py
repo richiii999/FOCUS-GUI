@@ -17,14 +17,14 @@ Side2Label = tk.Label(Side2, text="Chat Window", bg="skyblue")
 
 # Chat components inside Side2
 chat_area = tk.Text(Side2, wrap="word", height=15, width=40, bg="white", fg="black", state=tk.DISABLED)
-chat_area.grid(row =0, columnspan=2, sticky="news")
+chat_area.grid(row=0, columnspan=2, sticky="news")
 
 message_input = tk.Entry(Side2, width=40, bg="lightgray")
-message_input.grid(row =1, padx=5, pady=5, column=0, sticky="news")
+message_input.grid(row=1, padx=5, pady=5, column=0, sticky="news")
 
 # Using right arrow Unicode for the "Send" button
 send_button = tk.Button(Side2, text="-->", width=3, command=lambda: send_message(message_input.get()))
-send_button.grid(row =1, column=1, padx=5, pady=5, sticky="news")
+send_button.grid(row=1, column=1, padx=5, pady=5, sticky="news")
 
 # Big Image frame
 BigImg = tk.Frame(root, width=800, height=800, bg="grey", relief='ridge', borderwidth=5)
@@ -61,6 +61,7 @@ Side2.rowconfigure(0, weight=1)
 
 Side2Label.grid(column=0, row=0)
 
+# Function to send message
 def send_message(message):
     if message.strip():  # Only send if the message is not empty
         # Enable chat_area to insert message
@@ -68,5 +69,8 @@ def send_message(message):
         chat_area.insert(tk.END, "You: " + message + "\n")
         chat_area.config(state=tk.DISABLED)  # Make chat_area read-only again
         message_input.delete(0, tk.END)  # Clear the input field
+
+# Bind the Enter key to send the message
+message_input.bind('<Return>', lambda event: send_message(message_input.get()))
 
 root.mainloop()
