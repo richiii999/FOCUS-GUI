@@ -1,9 +1,11 @@
 import sys
-sys.path.append(".") # Test scripts use modules too (run from toplevel tho)
+sys.path.append("./tests") # Test scripts use modules too (run from toplevel tho)
 
 import tkinter as tk
 from tkinter import ttk, filedialog
 from modules import PDFViewer
+import SLMResponse
+from SLMResponse import Chatting, StartChatting
 
 root = tk.Tk()
 root.title("FOCUS")
@@ -65,15 +67,47 @@ Side2.rowconfigure(0, weight=1)
 Side2Label.grid(column=0, row=0)
 
 # Function to send message
-def send_message(message):
+def send_message(message, visible=True):
+    StartChatting()
     if message.strip():  # Only send if the message is not empty
         # Enable chat_area to insert message
         chat_area.config(state=tk.NORMAL)
-        chat_area.insert(tk.END, "You: " + message + "\n")
+        print(visible)
+        if visible: chat_area.insert(tk.END, "You: " + message + "\n")
+        
+        # Call the Chatting function to get the AI response
+        response = Chatting(message)  # Assuming Chatting() handles user input and gives a response
+        
+        # Display AI response in chat_area
+        chat_area.insert(tk.END, "AI: " + response + "\n")
+
         chat_area.config(state=tk.DISABLED)  # Make chat_area read-only again
         message_input.delete(0, tk.END)  # Clear the input field
 
+        #Get the input and print it out.
+        #pass the message to an SLM Llama 3.2
+        
+        print(f"Message Sent: {message}")
+        print(f"AI Response: {response}")
+
+
+
+
+
 # Bind the Enter key to send the message
 message_input.bind('<Return>', lambda event: send_message(message_input.get()))
+
+
+# Start the chat by selecting the model
+def start_chat():
+    """Initiates the chat session and loads the available models."""
+    models = SLMResponse.StartChatting()  # Fetch the available models from the container
+    model_num = tk.simpledialog.askstring("Model Selection", f"Select a model: {models}")
+    SLMResponse.StartChatting(model_num)  # Set the selected model
+
+# Run the app
+start_chat()  # Initiate chat session on startup
+chat_area.config(state=tk.NORMAL)
+chat_area.insert(tk.END, "AI: I'm a helpful AI assistant tool and I'm here to assist you with whatever you need." +"\n")
 
 root.mainloop()
