@@ -118,6 +118,7 @@ Side1Label.grid(column=0, row=0)
 
 # Action Buttons
 AB = ActionButtons.ActionButtons(Side1)
+AB.A1.bind('<ButtonPress-1>', lambda self: send_message("Generate a 5 question quiz of algebra", False))
 
 # Side2 (Chat Window)
 Side2.grid(column=1, row=1, sticky='news')
