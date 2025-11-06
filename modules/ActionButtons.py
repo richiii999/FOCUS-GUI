@@ -3,8 +3,9 @@ from tkinter import ttk
 
 class ActionButtons(tk.Frame):
     def __init__(self, master):
+        super().__init__(master) # Required idk
+
         # Action Buttons
-        super().__init__(master)
         self.A1 = tk.Button(self, text="A1", bg="red",    relief='ridge', borderwidth=3)
         self.A2 = tk.Button(self, text="A2", bg="green",  relief='ridge', borderwidth=3)
         self.A3 = tk.Button(self, text="A3", bg="blue",   relief='ridge', borderwidth=3)
@@ -20,7 +21,8 @@ class ActionButtons(tk.Frame):
         self.A5.bind('<ButtonPress-1>', lambda self: print("Action5"))
         self.A6.bind('<ButtonPress-1>', lambda self: print("Action6"))
         
-        # Button Placement in 2x3 Grid    # Action Button effects
+        # Button Placement in 2x3 Grid
+        self.grid(column=0, row=0, sticky='news') # Self-placement
         self.A1.grid(column=0, row=0, sticky='news')
         self.A2.grid(column=1, row=0, sticky='news')
         self.A3.grid(column=2, row=0, sticky='news')
@@ -28,7 +30,7 @@ class ActionButtons(tk.Frame):
         self.A5.grid(column=1, row=1, sticky='news')
         self.A6.grid(column=2, row=1, sticky='news')
 
-        # Buttons resize to fit frame
+        # Buttons resize to fit 2x3 Grid
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
         self.columnconfigure(2, weight=1)

@@ -47,8 +47,8 @@ Side1.grid(column=1, row=0, sticky='news')
 Side1.columnconfigure(0, weight=1)
 Side1.rowconfigure(0, weight=1)
 
-buttons = ActionButtons.ActionButtons(Side1)
-buttons.grid(column=0, row=0, sticky='news')
+# Action Buttons
+AB = ActionButtons.ActionButtons(Side1)
 
 # Side2
 Side2.grid(column=1, row=1, sticky='news')
