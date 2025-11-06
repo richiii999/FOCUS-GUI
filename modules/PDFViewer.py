@@ -1,5 +1,6 @@
 import tkinter as tk
-from tkinter import ttk, filedialog
+from tkinter import ttk 
+from tkinter import filedialog # Picking a file
 import fitz  # PyMuPDF
 import threading
 from PIL import Image, ImageTk  # For handling images in Tkinter
