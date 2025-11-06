@@ -1,8 +1,8 @@
 import sys
-sys.path.append("./tests") # Test scripts use modules too (run from toplevel tho)
+sys.path.append("./tests")  # Test scripts use modules too (run from toplevel tho)
 
 import tkinter as tk
-from tkinter import ttk, filedialog
+from tkinter import ttk, filedialog, simpledialog
 from modules import PDFViewer
 import SLMResponse
 from SLMResponse import Chatting, StartChatting
@@ -11,8 +11,7 @@ root = tk.Tk()
 root.title("FOCUS")
 root.geometry('800x600')
 
-## Making the frames
-# Side1 Frame
+# Making the frames
 Side1 = tk.Frame(root, width=400, height=400, bg="skyblue", relief='ridge', borderwidth=5)
 Side1Label = tk.Label(Side1, text="Side1Label", bg="skyblue")
 
@@ -72,27 +71,44 @@ def send_message(message, visible=True):
     if message.strip():  # Only send if the message is not empty
         # Enable chat_area to insert message
         chat_area.config(state=tk.NORMAL)
-        print(visible)
-        if visible: chat_area.insert(tk.END, "You: " + message + "\n")
+        
+        if visible:
+            chat_area.insert(tk.END, "You: " + message + "\n\n", "right_align")  # Use the right_align tag for user messages
+            #insert_separator_line()
         
         # Call the Chatting function to get the AI response
         response = Chatting(message)  # Assuming Chatting() handles user input and gives a response
         
         # Display AI response in chat_area
-        chat_area.insert(tk.END, "AI: " + response + "\n")
+        chat_area.insert(tk.END, "AI: " + response + "\n\n")  # AI messages will stay left-aligned
+
+        # Insert a dynamically sized horizontal line
+        #insert_separator_line()
 
         chat_area.config(state=tk.DISABLED)  # Make chat_area read-only again
         message_input.delete(0, tk.END)  # Clear the input field
 
-        #Get the input and print it out.
-        #pass the message to an SLM Llama 3.2
-        
         print(f"Message Sent: {message}")
         print(f"AI Response: {response}")
 
+# Configure the 'right_align' tag for right-aligned text
+chat_area.tag_configure("right_align", justify="right")
 
+# Function to insert a dynamically sized separator line based on the width of the chat area
+def insert_separator_line():
+    # Get the width of the chat_area in pixels
+    width = chat_area.winfo_width()
+    
+    # Estimate how many characters should fit in the given width.
+    # We'll use the width of a single character in the current font
+    font_size = int(chat_area.cget("font").split()[1])  # Extract font size
+    character_width = font_size * 0.5  # Approximate pixel width of one character
 
+    # Calculate number of characters that can fit in the width of the chat area
+    num_chars = int(width // character_width)  # We use floor division to avoid partial characters
 
+    # Insert a line of dashes that fit the width of the chat area
+    chat_area.insert(tk.END, "-" * num_chars + "\n")
 
 # Bind the Enter key to send the message
 message_input.bind('<Return>', lambda event: send_message(message_input.get()))
@@ -108,6 +124,6 @@ def start_chat():
 # Run the app
 start_chat()  # Initiate chat session on startup
 chat_area.config(state=tk.NORMAL)
-chat_area.insert(tk.END, "AI: I'm a helpful AI assistant tool and I'm here to assist you with whatever you need." +"\n")
+chat_area.insert(tk.END, "AI: I'm a helpful AI assistant tool and I'm here to assist you with whatever you need." + "\n\n")
 
 root.mainloop()
