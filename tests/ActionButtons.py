@@ -31,6 +31,22 @@ A4 = tk.Button(Side1, text="A4", bg="yellow", relief='ridge', borderwidth=3)
 A5 = tk.Button(Side1, text="A5", bg="purple", relief='ridge', borderwidth=3)
 A6 = tk.Button(Side1, text="A6", bg="cyan",   relief='ridge', borderwidth=3)
 
+# Action Button effects
+def Action1(s): print(f"Action1: {s}")
+def Action2(s): print(f"Action2: {s}")
+def Action3(s): print(f"Action3: {s}")
+def Action4(s): print(f"Action4: {s}")
+def Action5(s): print(f"Action5: {s}")
+def Action6(s): print(f"Action6: {s}")
+
+A1.bind('<ButtonPress-1>', lambda e: Action1("test1"))
+A2.bind('<ButtonPress-1>', lambda e: Action2("test2"))
+A3.bind('<ButtonPress-1>', lambda e: Action3("test3"))
+A4.bind('<ButtonPress-1>', lambda e: Action4("test4"))
+A5.bind('<ButtonPress-1>', lambda e: Action5("test5"))
+A6.bind('<ButtonPress-1>', lambda e: Action6("test6"))
+
+
 
 ## Grid placement
 # Root Grid
