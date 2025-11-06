@@ -23,16 +23,13 @@ Side2Label = tk.Label(Side2, text="Side2Label", bg="skyblue")
 BigImg = tk.Frame(root, width=800, height=800, bg="grey", relief='ridge', borderwidth=5)
 BigImgLabel = tk.Label(BigImg, text="BigImgLabel", bg="grey")
 
-# Action Button Frames
-# Action1 (top left)
-A1 = tk.Button(Side1, text="A1", bg="red", relief='ridge', borderwidth=3)
-# A2 (top mid)
-A2 = tk.Button(Side1, text="A2", bg="green", relief='ridge', borderwidth=3)
-# A3 (top right)
-A3 = tk.Button(Side1, text="A3", bg="blue", relief='ridge', borderwidth=3)
+# Action Buttons
+A1 = tk.Button(Side1, text="A1", bg="red",    relief='ridge', borderwidth=3)
+A2 = tk.Button(Side1, text="A2", bg="green",  relief='ridge', borderwidth=3)
+A3 = tk.Button(Side1, text="A3", bg="blue",   relief='ridge', borderwidth=3)
 A4 = tk.Button(Side1, text="A4", bg="yellow", relief='ridge', borderwidth=3)
 A5 = tk.Button(Side1, text="A5", bg="purple", relief='ridge', borderwidth=3)
-A6 = tk.Button(Side1, text="A6", bg="cyan", relief='ridge', borderwidth=3)
+A6 = tk.Button(Side1, text="A6", bg="cyan",   relief='ridge', borderwidth=3)
 
 
 ## Grid placement
@@ -67,10 +64,7 @@ Side2.rowconfigure(0, weight=1)
 Side2Label.grid(column=0, row=0, sticky='news')
 
 ## Action buttons
-# A1
 A1.grid(column=0, row=0, sticky='news')
-# A1.rowconfigure(0, weight=1)
-# A1.columnconfigure(0, weight=1)
 A2.grid(column=1, row=0, sticky='news')
 A3.grid(column=2, row=0, sticky='news')
 A4.grid(column=0, row=1, sticky='news')
