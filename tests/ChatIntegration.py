@@ -3,70 +3,13 @@ sys.path.append("./tests")  # Test scripts use modules too (run from toplevel th
 
 import tkinter as tk
 from tkinter import ttk, filedialog, simpledialog
-from modules import PDFViewer
+from modules import PDFViewer, ActionButtons
 import SLMResponse
 from SLMResponse import Chatting, StartChatting
 
 root = tk.Tk()
 root.title("FOCUS")
 root.geometry('800x600')
-
-## Declare functions
-# Function to send message
-def send_message(message, visible=True):
-    StartChatting()
-    if message.strip():  # Only send if the message is not empty
-        # Enable chat_area to insert message
-        chat_area.config(state=tk.NORMAL)
-        
-        if visible:
-            chat_area.insert(tk.END, "You: " + message + "\n\n", "right_align")  # Use the right_align tag for user messages
-            #insert_separator_line()
-        
-        # Call the Chatting function to get the AI response
-        response = Chatting(message)  # Assuming Chatting() handles user input and gives a response
-        
-        # Display AI response in chat_area
-        chat_area.insert(tk.END, "AI: " + response + "\n\n")  # AI messages will stay left-aligned
-
-        # Insert a dynamically sized horizontal line
-        #insert_separator_line()
-
-        chat_area.config(state=tk.DISABLED)  # Make chat_area read-only again
-        message_input.delete(0, tk.END)  # Clear the input field
-
-        print(f"Message Sent: {message}")
-        print(f"AI Response: {response}")
-
-# Configure the 'right_align' tag for right-aligned text
-chat_area.tag_configure("right_align", justify="right")
-
-# Function to insert a dynamically sized separator line based on the width of the chat area
-def insert_separator_line():
-    # Get the width of the chat_area in pixels
-    width = chat_area.winfo_width()
-    
-    # Estimate how many characters should fit in the given width.
-    # We'll use the width of a single character in the current font
-    font_size = int(chat_area.cget("font").split()[1])  # Extract font size
-    character_width = font_size * 0.5  # Approximate pixel width of one character
-
-    # Calculate number of characters that can fit in the width of the chat area
-    num_chars = int(width // character_width)  # We use floor division to avoid partial characters
-
-    # Insert a line of dashes that fit the width of the chat area
-    chat_area.insert(tk.END, "-" * num_chars + "\n")
-
-# Bind the Enter key to send the message
-message_input.bind('<Return>', lambda event: send_message(message_input.get()))
-
-
-# Start the chat by selecting the model
-def start_chat():
-    """Initiates the chat session and loads the available models."""
-    models = SLMResponse.StartChatting()  # Fetch the available models from the container
-    model_num = tk.simpledialog.askstring("Model Selection", f"Select a model: {models}")
-    SLMResponse.StartChatting(model_num)  # Set the selected model
 
 
 # Making the frames
@@ -125,6 +68,63 @@ Side2.columnconfigure(0, weight=1)
 Side2.rowconfigure(0, weight=1)
 
 Side2Label.grid(column=0, row=0)
+## Declare functions
+# Function to send message
+def send_message(message, visible=True):
+    StartChatting()
+    if message.strip():  # Only send if the message is not empty
+        # Enable chat_area to insert message
+        chat_area.config(state=tk.NORMAL)
+        
+        if visible:
+            chat_area.insert(tk.END, "You: " + message + "\n\n", "right_align")  # Use the right_align tag for user messages
+            #insert_separator_line()
+        
+        # Call the Chatting function to get the AI response
+        response = Chatting(message)  # Assuming Chatting() handles user input and gives a response
+        
+        # Display AI response in chat_area
+        chat_area.insert(tk.END, "AI: " + response + "\n\n")  # AI messages will stay left-aligned
+
+        # Insert a dynamically sized horizontal line
+        #insert_separator_line()
+
+        chat_area.config(state=tk.DISABLED)  # Make chat_area read-only again
+        message_input.delete(0, tk.END)  # Clear the input field
+
+        print(f"Message Sent: {message}")
+        print(f"AI Response: {response}")
+
+# Configure the 'right_align' tag for right-aligned text
+chat_area.tag_configure("right_align", justify="right")
+
+# Function to insert a dynamically sized separator line based on the width of the chat area
+def insert_separator_line():
+    # Get the width of the chat_area in pixels
+    width = chat_area.winfo_width()
+    
+    # Estimate how many characters should fit in the given width.
+    # We'll use the width of a single character in the current font
+    font_size = int(chat_area.cget("font").split()[1])  # Extract font size
+    character_width = font_size * 0.5  # Approximate pixel width of one character
+
+    # Calculate number of characters that can fit in the width of the chat area
+    num_chars = int(width // character_width)  # We use floor division to avoid partial characters
+
+    # Insert a line of dashes that fit the width of the chat area
+    chat_area.insert(tk.END, "-" * num_chars + "\n")
+
+# Bind the Enter key to send the message
+message_input.bind('<Return>', lambda event: send_message(message_input.get()))
+
+
+# Start the chat by selecting the model
+def start_chat():
+    """Initiates the chat session and loads the available models."""
+    models = SLMResponse.StartChatting()  # Fetch the available models from the container
+    model_num = tk.simpledialog.askstring("Model Selection", f"Select a model: {models}")
+    SLMResponse.StartChatting(model_num)  # Set the selected model
+
 
 # Run the app
 start_chat()  # Initiate chat session on startup
