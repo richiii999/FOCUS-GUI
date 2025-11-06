@@ -4,7 +4,6 @@ sys.path.append(".") # Test scripts use modules too (run from toplevel tho)
 import tkinter as tk
 from tkinter import ttk
 
-from modules import PDFViewer
 from modules import ActionButtons
 
 ## Root window
@@ -38,9 +37,6 @@ root.rowconfigure(1, weight=2)
 BigImg.grid(column=0, row=0, columnspan=1, rowspan=2, sticky='news')
 BigImg.columnconfigure(0, weight=2)
 BigImg.rowconfigure(0, weight=2)
-
-pdf_viewer = PDFViewer.PDFViewer(BigImg)
-pdf_viewer.grid(column=0, row=0, sticky='news')
 
 # Side1
 Side1.grid(column=1, row=0, sticky='news')

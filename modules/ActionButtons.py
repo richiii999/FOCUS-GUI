@@ -2,37 +2,24 @@ import tkinter as tk
 from tkinter import ttk
 
 class ActionButtons(tk.Frame):
-    def __init__(self, master):
+    def __init__(self, master, numButtons=9):
         super().__init__(master) # Required idk
 
+        self.numButtons = numButtons # How many buttons in grid?
+
         # Action Buttons
-        self.A1 = tk.Button(self, text="A1", bg="red",    relief='ridge', borderwidth=3)
-        self.A2 = tk.Button(self, text="A2", bg="green",  relief='ridge', borderwidth=3)
-        self.A3 = tk.Button(self, text="A3", bg="blue",   relief='ridge', borderwidth=3)
-        self.A4 = tk.Button(self, text="A4", bg="yellow", relief='ridge', borderwidth=3)
-        self.A5 = tk.Button(self, text="A5", bg="purple", relief='ridge', borderwidth=3)
-        self.A6 = tk.Button(self, text="A6", bg="cyan",   relief='ridge', borderwidth=3)
+        self.buttons = []
 
-        # Action Button default bindings
-        self.A1.bind('<ButtonPress-1>', lambda self: print("Action1"))
-        self.A2.bind('<ButtonPress-1>', lambda self: print("Action2"))
-        self.A3.bind('<ButtonPress-1>', lambda self: print("Action3"))
-        self.A4.bind('<ButtonPress-1>', lambda self: print("Action4"))
-        self.A5.bind('<ButtonPress-1>', lambda self: print("Action5"))
-        self.A6.bind('<ButtonPress-1>', lambda self: print("Action6"))
+        for i in range(numButtons): 
+            self.buttons.append(tk.Button(self, text=f"Button_{str(i)}", bg="red", relief='ridge', borderwidth=3))
+            # Action Button default bindings
+            self.buttons[i].bind('<ButtonPress-1>', lambda e: self.buttons[i].config(state=tk.DISABLED))
+            # Button Placement in 2x3 Grid
+            self.buttons[i].grid(column=i%3, row=int(i/3), sticky='news')
+            
+            # Buttons resize to fit 2x3 Grid
+            self.columnconfigure(i%3, weight=1) # 3 cols
+            self.rowconfigure(int(i/3), weight=1) # 3 buttons per row (dyn add rows as needed)
         
-        # Button Placement in 2x3 Grid
-        self.grid(column=0, row=0, sticky='news') # Self-placement
-        self.A1.grid(column=0, row=0, sticky='news')
-        self.A2.grid(column=1, row=0, sticky='news')
-        self.A3.grid(column=2, row=0, sticky='news')
-        self.A4.grid(column=0, row=1, sticky='news')
-        self.A5.grid(column=1, row=1, sticky='news')
-        self.A6.grid(column=2, row=1, sticky='news')
-
-        # Buttons resize to fit 2x3 Grid
-        self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
-        self.columnconfigure(2, weight=1)
-        self.rowconfigure(0, weight=1)
-        self.rowconfigure(1, weight=1)
+        self.grid(column=0, row=0, sticky='news') # Auto Self-placement
+        
