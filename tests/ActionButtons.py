@@ -6,6 +6,7 @@ from tkinter import ttk
 
 from modules import PDFViewer
 
+## Root window
 root = tk.Tk()
 root.title("FOCUS")
 root.geometry('800x600')
@@ -21,7 +22,6 @@ Side2Label = tk.Label(Side2, text="Side2Label", bg="skyblue")
 
 # Big Image frame (left)
 BigImg = tk.Frame(root, width=800, height=800, bg="grey", relief='ridge', borderwidth=5)
-BigImgLabel = tk.Label(BigImg, text="BigImgLabel", bg="grey")
 
 # Action Buttons
 A1 = tk.Button(Side1, text="A1", bg="red",    relief='ridge', borderwidth=3)
@@ -35,15 +35,14 @@ A6 = tk.Button(Side1, text="A6", bg="cyan",   relief='ridge', borderwidth=3)
 ## Grid placement
 # Root Grid
 root.columnconfigure(0, weight=2)
-root.rowconfigure(0, weight=1)
 root.columnconfigure(1, weight=1)
-root.rowconfigure(1, weight=1)
+root.rowconfigure(0, weight=1)
+root.rowconfigure(1, weight=2)
 
 # BigImg
 BigImg.grid(column=0, row=0, columnspan=1, rowspan=2, sticky='news')
 BigImg.columnconfigure(0, weight=2)
 BigImg.rowconfigure(0, weight=2)
-BigImgLabel.grid(column=0, row=0)
 
 pdf_viewer = PDFViewer.PDFViewer(BigImg)
 pdf_viewer.grid(column=0, row=0, sticky='news')
@@ -70,5 +69,7 @@ A3.grid(column=2, row=0, sticky='news')
 A4.grid(column=0, row=1, sticky='news')
 A5.grid(column=1, row=1, sticky='news')
 A6.grid(column=2, row=1, sticky='news')
+
+
 
 root.mainloop()
