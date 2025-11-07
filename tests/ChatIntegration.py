@@ -92,6 +92,19 @@ def start_chat():
     model_num = tk.simpledialog.askstring("Model Selection", f"Select a model: {models}")
     SLMResponse.StartChatting(model_num)  # Set the selected model
 
+# Function to display "Hello" for 3 seconds
+def display_hello_for_3_seconds():
+    chat_area.config(state=tk.NORMAL)
+    chat_area.insert(tk.END, "Hello\n")
+    chat_area.config(state=tk.DISABLED)
+    # Clear the "Hello" message after 3 seconds
+    root.after(3000, clear_message)
+
+# Function to clear the message after 3 seconds
+def clear_message():
+    chat_area.config(state=tk.NORMAL)
+    chat_area.delete("end-1c linestart", "end-1c lineend")  # Deletes the last line (the "Hello" message)
+    chat_area.config(state=tk.DISABLED)
 
 # Run the app
 start_chat()  # Initiate chat session on startup
