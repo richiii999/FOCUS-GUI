@@ -18,7 +18,7 @@ root.rowconfigure(0, weight=1)
 Base = BaseFrames.BaseFrames(root)
 
 # Add Buttons in the top right
-numButtons = 5
+numButtons = 8
 print(f"There should be {numButtons} Buttons")
 AB = ActionButtons.ActionButtons(Base.TR, numButtons)
 
