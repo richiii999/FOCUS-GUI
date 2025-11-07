@@ -1,5 +1,5 @@
 import sys
-sys.path.append("./tests")  # Test scripts use modules too (run from toplevel tho)
+sys.path.append(".")  # Test scripts use modules too (run from toplevel tho)
 
 import tkinter as tk
 from tkinter import ttk
@@ -18,11 +18,11 @@ root.rowconfigure(0, weight=1)
 Base = BaseFrames.BaseFrames(root)
 AB = ActionButtons.ActionButtons(Base.TR, 6)
 
-# Action button bindings
-AB.A1.bind('<ButtonPress-1>', lambda self: send_message("Generate a 5 question quiz of algebra", False))
-
 # Add Chat Window in bottom-right frame
 Chat = ChatWindow.ChatWindow(Base.BR)
 
+# Action button bindings
+AB.buttons[0].config(text="Quiz")
+AB.buttons[0].bind('<ButtonPress-1>', lambda e: Chat.send_message("Generate a 5 question quiz of algebra", False))
 
 root.mainloop()
