@@ -3,25 +3,28 @@ sys.path.append("./tests")  # Test scripts use modules too (run from toplevel th
 
 import tkinter as tk
 from tkinter import ttk, filedialog, simpledialog
-from modules import PDFViewer, ActionButtons
+from modules import BaseFrames, PDFViewer, ActionButtons
 import SLMResponse
 from SLMResponse import Chatting, StartChatting
 
+# Setup Root window
 root = tk.Tk()
 root.title("FOCUS")
 root.geometry('800x600')
 
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
 
-# Making the frames
-Side1 = tk.Frame(root, width=400, height=400, bg="skyblue", relief='ridge', borderwidth=5)
-Side1Label = tk.Label(Side1, text="Side1Label", bg="skyblue")
+# Add Base Frames & other frames
+Base = BaseFrames.BaseFrames(root)
+PDFV = PDFViewer.PDFViewer(BigImg)
+AB = ActionButtons.ActionButtons(Side1)
 
-# Side2 Frame (Chat Window)
-Side2 = tk.Frame(root, width=400, height=400, bg="skyblue", relief='ridge', borderwidth=5)
-Side2Label = tk.Label(Side2, text="Chat Window", bg="skyblue")
+# Action button bindings
+AB.A1.bind('<ButtonPress-1>', lambda self: send_message("Generate a 5 question quiz of algebra", False))
 
 # Chat components inside Side2
-chat_area = tk.Text(Side2, wrap="word", height=15, width=40, bg="white", fg="black", state=tk.DISABLED, font=("Arial", 16, "bold"))
+chat_area = tk.Text(Base.Side2, wrap="word", height=15, width=40, bg="white", fg="black", state=tk.DISABLED, font=("Arial", 16, "bold"))
 chat_area.grid(row=0, columnspan=2, sticky="news")
 
 message_input = tk.Entry(Side2, width=40, bg="lightgray", font=("Arial", 16, "bold"))
@@ -31,44 +34,7 @@ message_input.grid(row=1, padx=5, pady=5, column=0, sticky="news")
 send_button = tk.Button(Side2, text="-->", width=5, font=("Arial", 16, "bold"), command=lambda: send_message(message_input.get()))
 send_button.grid(row=1, column=1, padx=5, pady=5, sticky="news")
 
-# Big Image frame
-BigImg = tk.Frame(root, width=800, height=800, bg="grey", relief='ridge', borderwidth=5)
-BigImgLabel = tk.Label(BigImg, text="BigImgLabel", bg="grey")
 
-## Grid placement
-# Root Grid
-root.columnconfigure(0, weight=2)
-root.rowconfigure(0, weight=1)
-root.columnconfigure(1, weight=1)
-root.rowconfigure(1, weight=1)
-
-# BigImg
-BigImg.grid(column=0, row=0, columnspan=1, rowspan=2, sticky='news')
-BigImg.columnconfigure(0, weight=2)
-BigImg.rowconfigure(0, weight=2)
-BigImgLabel.grid(column=0, row=0)
-
-# PDFViewer
-pdf_viewer = PDFViewer.PDFViewer(BigImg)
-pdf_viewer.grid(column=0, row=0, sticky='news')
-
-# Side1
-Side1.grid(column=1, row=0, sticky='news')
-Side1.columnconfigure(0, weight=1)
-Side1.rowconfigure(0, weight=1)
-
-Side1Label.grid(column=0, row=0)
-
-# Action Buttons
-AB = ActionButtons.ActionButtons(Side1)
-AB.A1.bind('<ButtonPress-1>', lambda self: send_message("Generate a 5 question quiz of algebra", False))
-
-# Side2 (Chat Window)
-Side2.grid(column=1, row=1, sticky='news')
-Side2.columnconfigure(0, weight=1)
-Side2.rowconfigure(0, weight=1)
-
-Side2Label.grid(column=0, row=0)
 ## Declare functions
 # Function to send message
 def send_message(message, visible=True):
