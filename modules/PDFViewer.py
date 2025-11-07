@@ -1,6 +1,6 @@
 import tkinter as tk
-from tkinter import ttk 
 from tkinter import filedialog # Picking a file
+
 import fitz  # PyMuPDF
 import threading
 from PIL import Image, ImageTk  # For handling images in Tkinter
@@ -47,7 +47,7 @@ class PDFViewer(tk.Frame):
 
     def load_pdf(self):
         # Open a file dialog to choose a PDF
-        file_path = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
+        file_path = tk.filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
         if file_path:
             # Open the PDF with PyMuPDF
             self.pdf_document = fitz.open(file_path)

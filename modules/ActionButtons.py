@@ -1,6 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
-
 
 # TODO fix BUG where buttons bindings are only on last button, not themselves
 

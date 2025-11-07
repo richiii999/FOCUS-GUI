@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
 
 class BaseFrames(tk.Frame):
     def __init__(self, master):
