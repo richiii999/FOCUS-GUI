@@ -43,6 +43,8 @@ class PDFViewer(tk.Frame):
         # Bind resize event
         self.master.bind("<Configure>", self.on_resize)
 
+        self.grid(row=0, column=0, sticky='news')
+
     def load_pdf(self):
         # Open a file dialog to choose a PDF
         file_path = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])

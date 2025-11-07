@@ -23,7 +23,7 @@ class BaseFrames(tk.Frame):
         self.columnconfigure(0, weight=2)
         self.columnconfigure(1, weight=1)
         self.rowconfigure(0, weight=1)
-        self.rowconfigure(1, weight=1)
+        self.rowconfigure(1, weight=2)
 
         # L
         self.L.columnconfigure(0, weight=2)
