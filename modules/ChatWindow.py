@@ -1,111 +1,67 @@
 import tkinter as tk
-from tkinter import ttk
 
-from modules import BaseFrames, PDFViewer, ActionButtons
 import SLMResponse
 
-# Setup Root window
-root = tk.Tk()
-root.title("FOCUS")
-root.geometry('800x600')
+class ChatWindow(tk.Frame):
+    def __init__(self, master):
+        super().__init__(master) # required idk
 
-root.columnconfigure(0, weight=1)
-root.rowconfigure(0, weight=1)
+        # Chat area
+        self.chat_area = tk.Text(master, wrap="word", height=15, width=40, bg="white", fg="black", state=tk.DISABLED, font=("Arial", 16, "bold"))
+        self.chat_area.grid(row=0, columnspan=2, sticky="news")
+        self.chat_area.tag_configure("right_align", justify="right")
 
-# Add Base Frames & other frames
-Base = BaseFrames.BaseFrames(root)
-PDFV = PDFViewer.PDFViewer(Base.L)
-AB = ActionButtons.ActionButtons(Base.TR)
+        # Input box
+        self.message_input = tk.Entry(master, width=40, bg="lightgray", font=("Arial", 16, "bold"))
+        self.message_input.grid(row=1, padx=5, pady=5, column=0, sticky="news")
+        self.message_input.bind('<Return>', lambda event: self.send_message(message_input.get()))
 
-# Action button bindings
-AB.A1.bind('<ButtonPress-1>', lambda self: send_message("Generate a 5 question quiz of algebra", False))
-
-# Chat components inside Side2
-chat_area = tk.Text(Base.BR, wrap="word", height=15, width=40, bg="white", fg="black", state=tk.DISABLED, font=("Arial", 16, "bold"))
-chat_area.grid(row=0, columnspan=2, sticky="news")
-
-message_input = tk.Entry(Base.BR, width=40, bg="lightgray", font=("Arial", 16, "bold"))
-message_input.grid(row=1, padx=5, pady=5, column=0, sticky="news")
-
-# Using right arrow Unicode for the "Send" button
-send_button = tk.Button(Base.BR, text="-->", width=5, font=("Arial", 16, "bold"), command=lambda: send_message(message_input.get()))
-send_button.grid(row=1, column=1, padx=5, pady=5, sticky="news")
-
-
-## Declare functions
-# Function to send message
-def send_message(message, visible=True):
-    SLMResponse.StartChatting()
-    if message.strip():  # Only send if the message is not empty
-        # Enable chat_area to insert message
-        chat_area.config(state=tk.NORMAL)
+        # Send button
+        self.send_button = tk.Button(master, text="-->", width=5, font=("Arial", 16, "bold"), command=lambda: self.send_message(message_input.get()))
+        self.send_button.grid(row=1, column=1, padx=5, pady=5, sticky="news")
         
-        if visible:
-            chat_area.insert(tk.END, "You: " + message + "\n\n", "right_align")  # Use the right_align tag for user messages
-            #insert_separator_line()
-        
-        # Call the Chatting function to get the AI response
-        response = SLMResponse.Chatting(message)  # Assuming Chatting() handles user input and gives a response
-        
-        # Display AI response in chat_area
-        chat_area.insert(tk.END, "AI: " + response + "\n\n")  # AI messages will stay left-aligned
+        # Place self within parent
+        self.grid(column=0, row=0, sticky='news')
 
-        # Insert a dynamically sized horizontal line
-        #insert_separator_line()
+        # Initilize chat session on startup
+        start_chat() 
+        self.chat_area.config(state=tk.NORMAL)
+        self.chat_area.insert(tk.END, "AI: I'm a helpful AI assistant tool and I'm here to assist you with whatever you need." + "\n\n")
 
-        chat_area.config(state=tk.DISABLED)  # Make chat_area read-only again
-        message_input.delete(0, tk.END)  # Clear the input field
+    # User input
+    def send_message(message, visible=True):
+        SLMResponse.StartChatting()
+        if message.strip(): # Only send if the message is not empty
+            self.chat_area.config(state=tk.NORMAL) # Enable chat_area to insert message
+            
+            if visible: self.chat_area.insert(tk.END, "You: " + message + "\n\n", "right_align")
+            
+            response = SLMResponse.Chatting(message)
+            
+            self.chat_area.insert(tk.END, "AI: " + response + "\n\n") # Display AI response in chat_area
 
-        print(f"Message Sent: {message}")
-        print(f"AI Response: {response}")
+            self.chat_area.config(state=tk.DISABLED)  # Make chat_area read-only again
+            message_input.delete(0, tk.END)  # Clear the input field
 
-# Configure the 'right_align' tag for right-aligned text
-chat_area.tag_configure("right_align", justify="right")
+            print(f"Message Sent: {message}")
+            print(f"AI Response: {response}")
 
-# Function to insert a dynamically sized separator line based on the width of the chat area
-def insert_separator_line():
-    # Get the width of the chat_area in pixels
-    width = chat_area.winfo_width()
-    
-    # Estimate how many characters should fit in the given width.
-    # We'll use the width of a single character in the current font
-    font_size = int(chat_area.cget("font").split()[1])  # Extract font size
-    character_width = font_size * 0.5  # Approximate pixel width of one character
+    def start_chat():
+        """Initiates the chat session and loads the available models."""
+        models = SLMResponse.StartChatting()  # Fetch the available models from the container
+        model_num = tk.simpledialog.askstring("Model Selection", f"Select a model: {models}")
+        SLMResponse.StartChatting(model_num)  # Set the selected model
 
-    # Calculate number of characters that can fit in the width of the chat area
-    num_chars = int(width // character_width)  # We use floor division to avoid partial characters
+    # Display "Hello" for 3 seconds
+    def Hello():
+        self.chat_area.config(state=tk.NORMAL)
+        self.chat_area.insert(tk.END, "Hello\n")
+        self.chat_area.config(state=tk.DISABLED)
+        root.after(3000, clear_message)
 
-    # Insert a line of dashes that fit the width of the chat area
-    chat_area.insert(tk.END, "-" * num_chars + "\n")
+    # Function to clear the message after 3 seconds
+    def clear_message():
+        self.chat_area.config(state=tk.NORMAL)
+        self.chat_area.delete("end-1c linestart", "end-1c lineend")  # Deletes the last line (the "Hello" message)
+        self.chat_area.config(state=tk.DISABLED)
 
-# Bind the Enter key to send the message
-message_input.bind('<Return>', lambda event: send_message(message_input.get()))
-
-
-# Start the chat by selecting the model
-def start_chat():
-    """Initiates the chat session and loads the available models."""
-    models = SLMResponse.StartChatting()  # Fetch the available models from the container
-    model_num = tk.simpledialog.askstring("Model Selection", f"Select a model: {models}")
-    SLMResponse.StartChatting(model_num)  # Set the selected model
-
-# Function to display "Hello" for 3 seconds
-def display_hello_for_3_seconds():
-    chat_area.config(state=tk.NORMAL)
-    chat_area.insert(tk.END, "Hello\n")
-    chat_area.config(state=tk.DISABLED)
-    # Clear the "Hello" message after 3 seconds
-    root.after(3000, clear_message)
-
-# Function to clear the message after 3 seconds
-def clear_message():
-    chat_area.config(state=tk.NORMAL)
-    chat_area.delete("end-1c linestart", "end-1c lineend")  # Deletes the last line (the "Hello" message)
-    chat_area.config(state=tk.DISABLED)
-
-# Run the app
-start_chat()  # Initiate chat session on startup
-chat_area.config(state=tk.NORMAL)
-chat_area.insert(tk.END, "AI: I'm a helpful AI assistant tool and I'm here to assist you with whatever you need." + "\n\n")
-
-root.mainloop()

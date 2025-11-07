@@ -19,4 +19,3 @@ class ActionButtons(tk.Frame):
             self.rowconfigure(int(i/3), weight=1) # 3 buttons per row (more rows as needed)
         
         self.grid(column=0, row=0, sticky='news') # Auto Self-placement
-        
