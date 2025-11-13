@@ -4,7 +4,7 @@ sys.path.append(".")  # Test scripts use modules too (run from toplevel tho)
 import tkinter as tk
 from tkinter import ttk
 
-from modules import BaseFrames, ActionButtons, ChatWindow
+from modules import BaseFrames, ActionButtons, ChatWindow, PDFViewer
 
 # Setup Root window
 root = tk.Tk()
@@ -14,8 +14,18 @@ root.geometry('800x600')
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 
-# Add Base Frames & Buttons
+
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
+
+# Add base frames
 Base = BaseFrames.BaseFrames(root)
+
+# Add the PDF viewer on the Left
+PDFV = PDFViewer.PDFViewer(Base.L)
+
+# Add Base Frames & Buttons
+# Base = BaseFrames.BaseFrames(root)
 AB = ActionButtons.ActionButtons(Base.TR, 6)
 
 # Add Chat Window in bottom-right frame
@@ -24,5 +34,14 @@ Chat = ChatWindow.ChatWindow(Base.BR)
 # Action button bindings
 AB.buttons[0].config(text="Quiz")
 AB.buttons[0].bind('<ButtonPress-1>', lambda e: Chat.send_message("Generate a 5 question quiz of algebra", False))
+
+# Timer
+AB.buttons[1].config(text="Break")
+AB.buttons[1].bind('<ButtonPress-1>', lambda e: Chat.send_message("Give me a 5 minute break", False))
+
+# Summary
+AB.buttons[2].config(text="Summary")
+AB.buttons[2].bind('<ButtonPress-1>', lambda e: Chat.send_message("Give me a Summary of the previous slides", False))
+
 
 root.mainloop()

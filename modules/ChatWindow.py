@@ -12,6 +12,13 @@ class ChatWindow(tk.Frame):
         self.chat_area.grid(row=0, columnspan=2, sticky="news")
         self.chat_area.tag_configure("right_align", justify="right")
 
+        # Scrollbar for chat_area
+        self.scrollbar = tk.Scrollbar(master, command=self.chat_area.yview)
+        self.scrollbar.grid(row=0, column=2, sticky='ns')  # 'ns' means north-south, it stretches vertically
+
+        self.chat_area.config(yscrollcommand=self.scrollbar.set)  # Link the scrollbar to the text widget
+
+
         # Input box
         self.message_input = tk.Entry(master, width=40, bg="lightgray", font=("Arial", 16, "bold"))
         self.message_input.grid(row=1, padx=5, pady=5, column=0, sticky="news")
