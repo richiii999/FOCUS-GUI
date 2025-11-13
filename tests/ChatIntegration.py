@@ -14,7 +14,6 @@ root.geometry('800x600')
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 
-
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 
@@ -37,11 +36,10 @@ AB.buttons[0].bind('<ButtonPress-1>', lambda e: Chat.send_message("Generate a 5 
 
 # Timer
 AB.buttons[1].config(text="Break")
-AB.buttons[1].bind('<ButtonPress-1>', lambda e: Chat.send_message("Give me a 5 minute break", False))
+AB.buttons[1].bind('<ButtonPress-1>', lambda e: Chat.start_break())
 
 # Summary
 AB.buttons[2].config(text="Summary")
 AB.buttons[2].bind('<ButtonPress-1>', lambda e: Chat.send_message("Give me a Summary of the previous slides", False))
-
 
 root.mainloop()
