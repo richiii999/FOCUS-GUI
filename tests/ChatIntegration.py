@@ -2,6 +2,7 @@ import sys
 sys.path.append(".")  # Test scripts use modules too (run from toplevel tho)
 
 import tkinter as tk
+import SLMResponse
 from tkinter import ttk
 
 from modules import BaseFrames, ActionButtons, ChatWindow, PDFViewer, QuizModule
@@ -32,7 +33,7 @@ Chat = ChatWindow.ChatWindow(Base.BR)
 
 # Action button bindings
 AB.buttons[0].config(text="Quiz")
-AB.buttons[0].bind('<ButtonPress-1>', lambda e: QuizModule.QuizWindow(Chat, Chat.send_message("Generate a 5 question quiz about algebra")))
+AB.buttons[0].bind('<ButtonPress-1>', lambda e: QuizModule.QuizWindow(Chat, SLMResponse.Chatting("Generate a 5 question quiz about algebra")))
 
 AB.buttons[1].config(text="Break")
 AB.buttons[1].bind('<ButtonPress-1>', lambda e: Chat.start_break())

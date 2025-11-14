@@ -8,6 +8,9 @@ class QuizWindow(tk.Toplevel):
         self.title("Algebra Quiz")
         self.geometry("400x400")
         
+        print("This is a test")
+        print(type(quiz_text))
+        print(quiz_text)
         # Parse the quiz text into questions and answers
         self.questions_and_answers = self.parse_quiz_text(quiz_text)
         self.current_question_index = 0
@@ -26,24 +29,32 @@ class QuizWindow(tk.Toplevel):
     def parse_quiz_text(self, quiz_text):
         """Parse the quiz text into questions and answers."""
         questions_and_answers = []
-        # Split the quiz into questions by matching question format
-        question_blocks = re.findall(r"(\d+\..+?)(a\..+?d\..+?)(Correct Answer: .+?)", quiz_text, re.DOTALL)
+        
+        # New regex pattern to match questions and answers
+        question_blocks = re.findall(r"(\d+\. [^\n]+)\n(a\..+)\n(b\..+)\n(c\..+)\n(d\..+)\nCorrect Answer: ([a-d])", quiz_text)
+
+        print("Found question blocks:", question_blocks)  # Debugging print
 
         for question_block in question_blocks:
-            question = question_block[0].strip()
-            answers = question_block[1].strip().splitlines()
-            correct_answer = question_block[2].strip().split(":")[1].strip()
+            question = question_block[0].strip()  # Question text
+            answers = [question_block[1].strip(), question_block[2].strip(), question_block[3].strip(), question_block[4].strip()]  # Answer options
+            correct_answer = question_block[5].strip()  # Correct answer (a, b, c, or d)
 
-            options = [answers[0], answers[1], answers[2], answers[3]]
             questions_and_answers.append({
                 "question": question,
-                "options": options,
+                "options": answers,
                 "correct_answer": correct_answer
             })
-
+        
+        print("Question and Answers: ")
+        print(questions_and_answers)
         return questions_and_answers
 
     def display_question(self):
+        if not self.questions_and_answers:
+            print("No questions available to display!")
+            return
+
         """Display the current question with its answers."""
         question_data = self.questions_and_answers[self.current_question_index]
         question_text = question_data["question"]
@@ -56,6 +67,10 @@ class QuizWindow(tk.Toplevel):
         # Display the question
         question_label = tk.Label(self, text=question_text, font=("Arial", 14))
         question_label.pack(pady=10)
+
+        # Display the current question number
+        question_counter_label = tk.Label(self, text=f"Question {self.current_question_index + 1} of {len(self.questions_and_answers)}", font=("Arial", 10))
+        question_counter_label.pack(pady=5)
 
         # Create buttons for each of the options (a, b, c, d)
         self.answer_buttons = []
@@ -104,80 +119,3 @@ class QuizWindow(tk.Toplevel):
         self.destroy()  # Close the quiz window
 
 
-class ChatWindow(tk.Frame):
-    def __init__(self, master):
-        super().__init__(master)
-        self.chat_area = tk.Text(master, wrap="word", height=20, width=60, bg="black", fg="lime", state=tk.DISABLED, font=("Consolas", 14))
-        self.chat_area.grid(row=0, columnspan=2, sticky="news", padx=5, pady=5)
-        self.chat_area.tag_configure("center", justify="center")
-        self.chat_area.tag_configure("right_align", justify="right")
-
-        self.message_input = tk.Entry(master, width=40, bg="gray20", fg="white", font=("Arial", 14))
-        self.message_input.grid(row=1, padx=5, pady=5, column=0, sticky="news")
-        self.message_input.bind('<Return>', lambda e: self.send_message(self.message_input.get()))
-
-        self.send_button = tk.Button(master, text="-->", width=5, font=("Arial", 14), command=lambda: self.send_message(self.message_input.get()))
-        self.send_button.grid(row=1, column=1, padx=5, pady=5, sticky="news")
-
-        self.grid(column=0, row=0, sticky='news')
-
-        self.start_chat()
-
-    def send_message(self, message, visible=True):
-        if message.strip():
-            self.chat_area.config(state=tk.NORMAL)
-            self.chat_area.insert(tk.END, f"You: {message}\n\n", "right_align")
-            self.chat_area.config(state=tk.DISABLED)
-            self.chat_area.see(tk.END)
-
-            # Trigger quiz if the user asks for it
-            if "quiz" in message.lower():
-                self.start_quiz()
-
-    def start_chat(self):
-        self.chat_area.config(state=tk.NORMAL)
-        self.chat_area.insert(tk.END, "AI: I'm a helpful assistant! Type 'quiz' to start an algebra quiz.\n\n")
-        self.chat_area.config(state=tk.DISABLED)
-
-    def start_quiz(self):
-        """Starts the quiz in a new window with dynamically generated questions."""
-        # Here you simulate the Llama generating a quiz text
-        generated_quiz_text = """
-        1. What is 2 + 2?
-        a. 3
-        b. 4
-        c. 5
-        d. 6
-        Correct Answer: b
-
-        2. What is 3 * 3?
-        a. 6
-        b. 7
-        c. 9
-        d. 12
-        Correct Answer: c
-
-        3. What is 5 - 3?
-        a. 1
-        b. 2
-        c. 3
-        d. 4
-        Correct Answer: b
-
-        4. What is 6 / 2?
-        a. 2
-        b. 3
-        c. 4
-        d. 5
-        Correct Answer: b
-
-        5. What is 10 + 5?
-        a. 12
-        b. 13
-        c. 14
-        d. 15
-        Correct Answer: d
-        """
-
-        # Open the quiz window with the generated quiz
-        QuizWindow(self, generated_quiz_text)

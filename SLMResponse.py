@@ -17,7 +17,7 @@ def PromptAI(prompt) -> str:
     context.append({"role":"user", "content":Tools.sanitize(prompt)})
     response = API.chat_with_collection(API.Models[modelNum], context, API.KBIDs[1])
 
-    response = response['choices'][0]['message']['content']
+    response = response['choices'][0]['message']['content'] 
     context.append({"role":"assistant", "content":Tools.sanitize(response)})
 
     return response
