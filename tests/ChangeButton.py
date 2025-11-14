@@ -37,7 +37,7 @@ input("Test 3: SLM chat")
 from modules import ChatWindow
 Chat = ChatWindow.ChatWindow(Base.BR) # Add chat window
 
-AB.UpdateButton(1, "SLM Chat", lambda e: SLM.PromptAI("Say 'Hello'"))
+AB.UpdateButton(1, "SLM Chat", lambda e: SLM.Chatting("Say Hello"))
 
 input("Test 4: Pull from action list")
 
