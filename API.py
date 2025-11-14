@@ -35,8 +35,8 @@ def delete_knowledge(kbid:str):
 ### Keys and links
 KBIDs = []
 
-disableKB = Tools.UserInput("Disable KB's? (y/N): ", ["y","n"])
-if not disableKB: # Allows API import without setting up the whole thing
+disableKB = Tools.UserInput("Disable KB's? (y/N): ", ["y","n"], 1)
+if disableKB == 'n': # Allows API import without setting up the whole thing
     KBIDs = [ # TODO change to dict perhaps
     create_knowledge('Expert', 'asdf')['id'], 
     create_knowledge('Study', 'asdf')['id']
