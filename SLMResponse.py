@@ -56,9 +56,7 @@ def sanitize(s) -> str: # Remove characters that cause issues from a str
 
 def UserInput(inputPrompt, validinput=None) -> str: # User input verification
     i = input(inputPrompt)
-    while i not in validinput:
-        print("Invalid input, try again")
-        i = input(inputPrompt)
+    while i not in validinput: i = input("Invalid input, try again\n" + inputPrompt)
     return i
 
 def Sense() -> str: # Gather output from the sensors
@@ -78,15 +76,12 @@ def StartChatting(response=""):
     """Starts a chat session by either listing available models or selecting one."""
     global modelNum
     if response == "": 
-        # Fetch available models from the docker container
-        API.Models += subprocess.check_output(
+        API.Models += subprocess.check_output( # Fetch available models from the docker container
             "sudo docker exec -it 34e768ba1a4f ollama list | grep -v NAME | awk '{print $1}'", 
-            shell=True).decode('utf-8').split('\n')[:-1]  # List models, formatted
-        return API.Models  # Return the models list for the GUI to use
-
-    else:
-        # Select model from the list
-        modelNum = int(response)  # This is passed as a string to this function
+            shell=True).decode('utf-8').split('\n')[:-1] # List models, formatted
+        return API.Models # Return the models list for the GUI to use
+    
+    else: modelNum = int(response) # Select model from the list
 
 def sanitize(s: str) -> str:
     """Sanitize the input string by removing problematic characters."""
@@ -99,12 +94,10 @@ def Chatting(user_input: str) -> str:
     # Get the AI response from PromptAI
     response = PromptAI(user_input)
     return response
-    # except KeyboardInterrupt: pass
-    # finally: EndStudySession() ### End of study: Summarize and append to StudyHistory.txt, then use that to create new knowledge
 
-
-def ActionsListPrompt():
+def ActionsListPrompt(numActions:int) -> str: # Prompts the AI to generate a list of N actions, returns response 
     print("Getting action space via RAG...")
-    with open('./LLM/GenerateActions.txt', 'r') as f1:
-    context.append({"role":"user", "content":ReadFileAsLine(f1)})
-    listResponse = API.chat_with_collection(API.Models[modelNum],context, API.KBIDs[0])['choices'][0]['message']['content']
+    with open('./Prompts/GenerateActions.txt', 'r') as f1:
+        TempContext = [{"role":"user", "content":ReadFileAsLine(f1)}]
+        return API.chat_with_collection(API.Models[modelNum], TempContext, API.KBIDs[0])['choices'][0]['message']['content']
+
