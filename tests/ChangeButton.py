@@ -5,18 +5,10 @@ import Tools
 import tkinter as tk
 from tkinter import ttk
 
-from modules import BaseFrames, ActionButtons
-
-# Setup Root window
-root = tk.Tk()
-root.title("FOCUS")
-root.geometry('800x600')
-
-root.columnconfigure(0, weight=1)
-root.rowconfigure(0, weight=1)
+from modules import RootWindow, BaseFrames, ActionButtons
 
 # Add base frames
-Base = BaseFrames.BaseFrames(root)
+Base = BaseFrames.BaseFrames(RootWindow.root)
 
 # Add Buttons in the top right
 numButtons = 8
@@ -56,4 +48,4 @@ AB.UpdateButton(4, label, lambda e: Chat.send_message("Instruct the user to perf
 
 
 # Start
-root.mainloop()
+RootWindow.root.mainloop()
