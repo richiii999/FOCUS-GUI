@@ -4,7 +4,7 @@ sys.path.append(".")  # Test scripts use modules too (run from toplevel tho)
 import tkinter as tk
 from tkinter import ttk
 
-from modules import BaseFrames, ActionButtons, ChatWindow, PDFViewer
+from modules import BaseFrames, ActionButtons, ChatWindow, PDFViewer, QuizModule
 
 # Setup Root window
 root = tk.Tk()
@@ -32,9 +32,8 @@ Chat = ChatWindow.ChatWindow(Base.BR)
 
 # Action button bindings
 AB.buttons[0].config(text="Quiz")
-AB.buttons[0].bind('<ButtonPress-1>', lambda e: Chat.send_message("Generate a 5 question quiz of algebra", False))
+AB.buttons[0].bind('<ButtonPress-1>', lambda e: QuizModule.QuizWindow(Chat, Chat.send_message("Generate a 5 question quiz about algebra")))
 
-# Timer
 AB.buttons[1].config(text="Break")
 AB.buttons[1].bind('<ButtonPress-1>', lambda e: Chat.start_break())
 

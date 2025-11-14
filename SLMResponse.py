@@ -7,6 +7,7 @@ import subprocess # manages subprocess I/O (ollama / webui servers, sensors, and
 import API # ./API.py: Contains API calls to webui
 context = []
 iterDelay = 5
+modelNum = 1 # Which model from API.Models is being used?
 
 def PromptAI(prompt) -> str:
     global context
@@ -95,9 +96,30 @@ def Chatting(user_input: str) -> str:
     response = PromptAI(user_input)
     return response
 
-def ActionsListPrompt(numActions:int) -> str: # Prompts the AI to generate a list of N actions, returns response 
+def FindBetween(s:str, start:str, end:str) -> str:
+    return s.split(start)[1].split(end)[0]
+
+def FormatActions(actionsList:str):
+    formattedActions = {}
+
+    for line in actionsList: # 
+        formattedActions[FindBetween(line, "**", "**")] = FindBetween(line, ":", ".")
+
+def GenerateActions(numActions:int, formatted:bool=false) -> str: 
+    """Prompts the AI to generate a list of N actions
+    if formatted, returns the label and desc separately. 
+    otherwise returns the raw response"""
+    
     print("Getting action space via RAG...")
-    with open('./Prompts/GenerateActions.txt', 'r') as f1:
-        TempContext = [{"role":"user", "content":ReadFileAsLine(f1)}]
-        return API.chat_with_collection(API.Models[modelNum], TempContext, API.KBIDs[0])['choices'][0]['message']['content']
+    with open('./Prompts/Para/GenerateActions.txt', 'r') as f1:
+        prompt = ReadFileAsLine(f1)
+        prompt = prompt.replace("NUMACTIONS", f"{numActions}")
+
+        TempContext = [{"role":"user", "content":prompt}] 
+
+    response = API.chat_with_collection(API.Models[modelNum], TempContext, API.KBIDs[0])['choices'][0]['message']['content']
+    
+    if formatted:
+        
+    else: return response
 

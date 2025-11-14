@@ -64,8 +64,8 @@ class ChatWindow(tk.Frame):
         self.chat_area.see(tk.END)
 
     # ---------- Break timer and embedded UI ----------
-    def start_break(self, event=None, minutes=5):
-        """Public trigger: insert timer widget and start countdown (minutes default 5)."""
+    def start_break(self, event=None, minutes=2):
+        """Public trigger: insert timer widget and start countdown (minutes default 2)."""
         if self.timer_running:
             return  # already running
 
