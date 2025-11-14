@@ -85,8 +85,10 @@ def FormatActions(actionsList:str) -> dict: # Takes response from GenerateAction
     formattedActions = {}
 
     for line in actionsList: 
-        if not ("**" in line) or (":" in line and "." in line): continue # Skip non-list lines
-        formattedActions[FindBetween(line, "**", "**")] = FindBetween(line, ":", ".")
+        if not ("**" in line) or (":" in line and "." in line): 
+            print(f"skipping {line}")
+            continue # Skip non-list lines
+        formattedActions[FindBetween(line, "**", "**")] = FindBetween(line, ":", "\n")
 
     return formattedActions
 

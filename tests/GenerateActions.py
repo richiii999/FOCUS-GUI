@@ -6,8 +6,8 @@ import SLMResponse as SLM
 
 SLM.StartChatting() # Initialize the models list
 
-rawResponse = SLM.GenerateActions(3,False)
-print("unformatted=\n"+rawResponse) # Prompt the AI for some actions
+# rawResponse = SLM.GenerateActions(3,False)
+# print("unformatted=\n"+rawResponse) # Prompt the AI for some actions
 
 print("formatted=")
 
