@@ -44,13 +44,6 @@ def EndStudySession(): # Writes the response to summaryPrompt into the StudyHist
 
     print("\nExiting...\n")
 
-def TTS(text):
-    myobj = gTTS(text)
-    myobj.save("response.mp3")
-    mixer.init()
-    mixer.music.load("response.mp3")
-    mixer.music.play()
-
 def ReadFileAsLine(f) -> str:
     s = ''
     for line in f.readlines(): s += sanitize(line).replace('\n',' ')
@@ -108,3 +101,10 @@ def Chatting(user_input: str) -> str:
     return response
     # except KeyboardInterrupt: pass
     # finally: EndStudySession() ### End of study: Summarize and append to StudyHistory.txt, then use that to create new knowledge
+
+
+def ActionsListPrompt():
+    print("Getting action space via RAG...")
+    with open('./LLM/GenerateActions.txt', 'r') as f1, open("./LLM/SysPrompt.txt", 'r') as f2: # Set system prompt from file
+    context.append({"role":"user", "content":ReadFileAsLine(f1)})
+    listResponse = API.chat_with_collection(API.Models[modelNum],context, API.KBIDs[0])['choices'][0]['message']['content']
