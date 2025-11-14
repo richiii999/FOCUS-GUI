@@ -34,10 +34,11 @@ input("Test 2: Invalid Button Change (idx of button outside range)")
 AB.UpdateButton(99, "FailedButton") # Shouldnt change, should print the error
 
 input("Test 3: SLM chat")
+Chat = ChatWindow.ChatWindow(Base.BR) # Add chat window
+
 AB.UpdateButton(1, "SLM Chat", lambda e: SLM.PromptAI("Say 'Hello'"))
 
 input("Test 4: Pull from action list")
-
 
 
 
