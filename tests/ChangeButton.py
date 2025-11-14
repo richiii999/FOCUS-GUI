@@ -38,10 +38,11 @@ input("Test 3: SLM chat")
 from modules import ChatWindow
 Chat = ChatWindow.ChatWindow(Base.BR) # Add chat window
 
-AB.UpdateButton(3, "SLM Chat", lambda e: Chat.send_message("Say Hello")) # AI should respond to this
+AB.UpdateButton(3, "SLM Hello", lambda e: Chat.send_message("Say Hello")) # AI should respond to this
 
 input("Test 4: Pull from action list")
 rawResponse = SLM.GenerateActions(3,False) # Generate 3 actions
+
 # rawResponse = """testline
 # 1. **Task1**: Say 'Task1'.
 # 2. **Task2**: Say 'Task2'.
@@ -57,7 +58,8 @@ chosenNum = randrange(3) # Randomly pick one of 3 actions
 label = list(formattedResponse)[chosenNum]
 desc = list(formattedResponse.values())[chosenNum]
 
-AB.UpdateButton(4, label, lambda e: Chat.send_message(desc))
+AB.UpdateButton(4, label, lambda e: Chat.send_message("Instruct the user to perform the following task: " + desc, False))
 
 
-root.mainloop()
+# Start
+# root.mainloop()
