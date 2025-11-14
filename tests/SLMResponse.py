@@ -105,6 +105,6 @@ def Chatting(user_input: str) -> str:
 
 def ActionsListPrompt():
     print("Getting action space via RAG...")
-    with open('./LLM/GenerateActions.txt', 'r') as f1, open("./LLM/SysPrompt.txt", 'r') as f2: # Set system prompt from file
+    with open('./LLM/GenerateActions.txt', 'r') as f1:
     context.append({"role":"user", "content":ReadFileAsLine(f1)})
     listResponse = API.chat_with_collection(API.Models[modelNum],context, API.KBIDs[0])['choices'][0]['message']['content']
