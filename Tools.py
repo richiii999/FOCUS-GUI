@@ -17,6 +17,22 @@ def UserInput(inputPrompt, validinput=None) -> str:
     while i not in validinput: i = input("Invalid input, try again\n" + inputPrompt)
     return i
 
+# From: https://stackoverflow.com/questions/3368969/find-string-between-two-substrings
 def FindBetween(s:str, start:str, end:str) -> str: 
     """Finds s between start:end, returns empty str if something wrong"""
-    return s.split(start)[1].split(end)[0]
+    return s[s.find(start)+len(start):s.rfind(end)]
+
+def FormatActions(actionsList:str) -> dict: # Takes response from SLM.GenerateActions() and tries to format it
+    # The raw response (input) should be something like "1. **Name**: desc."
+    # The formatted response (output) should be {"Name" : "desc"}
+    # This is bad since the ai response not deterministic, we basically just ask it nicely to format a certain way.
+    
+    formattedActions = {}
+
+    for line in actionsList.split('\n'): 
+        if not ("**" in line) or not (":" in line and "." in line): 
+            print(f"skipping {line}")
+            continue # Skip non-list lines
+        formattedActions[FindBetween(line, "**", "**")] = FindBetween(line, ":", ".")
+
+    return formattedActions

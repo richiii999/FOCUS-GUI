@@ -5,7 +5,7 @@ import time
 import subprocess # manages subprocess I/O (ollama / webui servers, sensors, and ffmpeg)
 
 import Tools # Contains string manipulation stuff
-import API # ./API.py: Contains API calls to webui
+# import API # ./API.py: Contains API calls to webui
 
 
 context = []
@@ -78,21 +78,7 @@ def Chatting(user_input: str) -> str:
     response = PromptAI(user_input)
     return response
 
-def FormatActions(actionsList:str) -> dict: # Takes response from GenerateActions and tries to format it
-    # The response should be something like "1. **Name**: desc."
-    # This is bad since the ai response not deterministic, we basically just ask it nicely to format a certain way.
-    
-    formattedActions = {}
-
-    for line in actionsList: 
-        if not ("**" in line) or (":" in line and "." in line): 
-            print(f"skipping {line}")
-            continue # Skip non-list lines
-        formattedActions[FindBetween(line, "**", "**")] = FindBetween(line, ":", "\n")
-
-    return formattedActions
-
-def GenerateActions(numActions:int, formatted:bool=False): 
+def GenerateActions(numActions:int=3, formatted:bool=False): 
     """Prompts the AI to generate a list of N actions
     if formatted, returns the label and desc in a dict. 
     otherwise returns the raw response as a str"""
@@ -102,7 +88,7 @@ def GenerateActions(numActions:int, formatted:bool=False):
         prompt = Tools.ReadFileAsLine(f1)
         prompt = prompt.replace("NUMACTIONS", f"{numActions}")
 
-        TempContext = [{"role":"user", "content":prompt}] 
+        TempContext = [{"role":"user", "content":prompt}]
 
     response = API.chat_with_collection(API.Models[modelNum], TempContext, API.KBIDs[0])['choices'][0]['message']['content']
     
