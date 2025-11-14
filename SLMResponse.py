@@ -100,10 +100,13 @@ def FindBetween(s:str, start:str, end:str) -> str: # Finds s between start:end
     return s.split(start)[1].split(end)[0]
 
 def FormatActions(actionsList:str) -> dict: # Takes response from GenerateActions and tries to format it
+    # The response should be something like "1. **Name**: desc."
     # This is bad since the ai response not deterministic, we basically just ask it nicely to format a certain way.
+    
     formattedActions = {}
 
-    for line in actionsList: # Each list item into dict
+    for line in actionsList: 
+        if not ("**" in line) or (":" in line and "." in line): continue # Skip non-list lines
         formattedActions[FindBetween(line, "**", "**")] = FindBetween(line, ":", ".")
 
     return formattedActions
