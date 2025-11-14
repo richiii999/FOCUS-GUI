@@ -34,19 +34,19 @@ AB.UpdateButton(0, "UpdatedButton", lambda e: print("Updated Button Test")) # Sh
 input("Test 2: Invalid Button Change (idx of button outside range)")
 AB.UpdateButton(99, "FailedButton") # Shouldnt change, should print the error
 
-# input("Test 3: SLM chat")
-# from modules import ChatWindow
-# Chat = ChatWindow.ChatWindow(Base.BR) # Add chat window
+input("Test 3: SLM chat")
+from modules import ChatWindow
+Chat = ChatWindow.ChatWindow(Base.BR) # Add chat window
 
-# AB.UpdateButton(3, "SLM Chat", lambda e: Chat.send_message("Say Hello")) # AI should respond to this
+AB.UpdateButton(3, "SLM Chat", lambda e: Chat.send_message("Say Hello")) # AI should respond to this
 
 input("Test 4: Pull from action list")
-# rawResponse = SLM.GenerateActions(3,False) # Generate 3 actions
-rawResponse = """testline
-1. **Task1**: Say 'Task1'.
-2. **Task2**: Say 'Task2'.
-3. **Task3**: Say 'Task3'.
-testtest"""
+rawResponse = SLM.GenerateActions(3,False) # Generate 3 actions
+# rawResponse = """testline
+# 1. **Task1**: Say 'Task1'.
+# 2. **Task2**: Say 'Task2'.
+# 3. **Task3**: Say 'Task3'.
+# testtest"""
 
 formattedResponse = Tools.FormatActions(rawResponse) # Put them in a dict
 print(f"Generated Actions:\n{rawResponse}")
