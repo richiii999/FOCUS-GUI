@@ -106,12 +106,14 @@ def FormatActions(actionsList:str) -> dict: # Takes response from GenerateAction
     formattedActions = {}
 
     for line in actionsList: 
-        if not ("**" in line) or (":" in line and "." in line): continue # Skip non-list lines
-        formattedActions[FindBetween(line, "**", "**")] = FindBetween(line, ":", ".")
+        if not ("**" in line) or (":" in line and "." in line): 
+            print(f"skipping {line}")
+            continue # Skip non-list lines
+        formattedActions[FindBetween(line, "**", "**")] = FindBetween(line, ":", "\n")
 
     return formattedActions
 
-def GenerateActions(numActions:int, formatted:bool=false): 
+def GenerateActions(numActions:int, formatted:bool=False): 
     """Prompts the AI to generate a list of N actions
     if formatted, returns the label and desc in a dict. 
     otherwise returns the raw response as a str"""
