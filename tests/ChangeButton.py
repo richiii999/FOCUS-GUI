@@ -5,18 +5,10 @@ import Tools
 import tkinter as tk
 from tkinter import ttk
 
-from modules import BaseFrames, ActionButtons
-
-# Setup Root window
-root = tk.Tk()
-root.title("FOCUS")
-root.geometry('800x600')
-
-root.columnconfigure(0, weight=1)
-root.rowconfigure(0, weight=1)
+from modules import RootWindow, BaseFrames, ActionButtons
 
 # Add base frames
-Base = BaseFrames.BaseFrames(root)
+Base = BaseFrames.BaseFrames(RootWindow.root)
 
 # Add Buttons in the top right
 numButtons = 8
@@ -38,15 +30,10 @@ input("Test 3: SLM chat")
 from modules import ChatWindow
 Chat = ChatWindow.ChatWindow(Base.BR) # Add chat window
 
-AB.UpdateButton(3, "SLM Chat", lambda e: Chat.send_message("Say Hello")) # AI should respond to this
+AB.UpdateButton(3, "SLM Hello", lambda e: Chat.send_message("Say Hello")) # AI should respond to this
 
 input("Test 4: Pull from action list")
 rawResponse = SLM.GenerateActions(3,False) # Generate 3 actions
-# rawResponse = """testline
-# 1. **Task1**: Say 'Task1'.
-# 2. **Task2**: Say 'Task2'.
-# 3. **Task3**: Say 'Task3'.
-# testtest"""
 
 formattedResponse = Tools.FormatActions(rawResponse) # Put them in a dict
 print(f"Generated Actions:\n{rawResponse}")
@@ -57,7 +44,8 @@ chosenNum = randrange(3) # Randomly pick one of 3 actions
 label = list(formattedResponse)[chosenNum]
 desc = list(formattedResponse.values())[chosenNum]
 
-AB.UpdateButton(4, label, lambda e: Chat.send_message(desc))
+AB.UpdateButton(4, label, lambda e: Chat.send_message("Instruct the user to perform the following task: " + desc, False))
 
 
-root.mainloop()
+# Start
+RootWindow.root.mainloop()
