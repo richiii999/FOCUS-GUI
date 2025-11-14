@@ -1,6 +1,7 @@
 import sys
 sys.path.append(".") # Test scripts use modules too (run from toplevel tho)
 
+import Tools
 import API
 import SLMResponse as SLM
 
