@@ -5,7 +5,7 @@ import time
 import subprocess # manages subprocess I/O (ollama / webui servers, sensors, and ffmpeg)
 
 import Tools # Contains string manipulation stuff
-# import API # ./API.py: Contains API calls to webui
+import API # ./API.py: Contains API calls to webui
 
 
 context = []
