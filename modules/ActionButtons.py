@@ -46,3 +46,14 @@ class ActionButtons(tk.Frame):
     def defaultAction(self, buttonEvent): # Default button action: Disable the button on click
         print(f"Button pressed: {buttonEvent.widget}")
         buttonEvent.widget.config(state=tk.DISABLED)
+
+    def UpdateButton(self, buttonNum:int=-1, newLabel:str="", newFunc=None):
+        if buttonNum not in range (len(self.buttons)): 
+            print(f"ButtonNum {buttonNum} not in buttons[] range(0-{len(self.buttons)})")
+            return
+        
+        b = self.buttons[buttonNum]
+        b.configure(text=newLabel)
+        if newFunc: b.bind('<ButtonPress-1>', newFunc)
+
+        print(f"Updated Button {buttonNum}, {newLabel}, to bind to {newFunc}")
