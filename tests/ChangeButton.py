@@ -1,5 +1,6 @@
 import sys
 sys.path.append(".") # Test scripts use modules too (run from toplevel tho)
+import Tools
 
 import tkinter as tk
 from tkinter import ttk
