@@ -6,14 +6,12 @@ import SLMResponse as SLM
 
 SLM.StartChatting() # Initialize the models list
 
-# rawResponse = SLM.GenerateActions(3,False)
-# print("unformatted=\n"+rawResponse) # Prompt the AI for some actions
+rawResponse = SLM.GenerateActions(3,False)
+print("unformatted=\n"+rawResponse) # Prompt the AI for some actions
 
-print("formatted=")
+formattedResponse = Tools.FormatActions(rawResponse)
+print(f"formatted=\n{formattedResponse}")
 
-formattedResponse = SLM.GenerateActions(3,True)
-for k,v in formattedResponse:
+print("unpacked=")
+for k,v in formattedResponse.items():
     print(f"{k} : {v}")
-
-
-print(f"dict={formattedResponse}")
