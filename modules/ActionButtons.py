@@ -48,7 +48,7 @@ class ActionButtons(tk.Frame):
         buttonEvent.widget.config(state=tk.DISABLED)
 
     def UpdateButton(self, buttonNum:int=-1, newLabel:str="", newFunc=None):
-        if buttonNum not in range (len(self.buttons)): 
+        if buttonNum not in range (len(self.buttons)): # Invalid buttonNum
             print(f"ButtonNum {buttonNum} not in buttons[] range(0-{len(self.buttons)})")
             return
         
