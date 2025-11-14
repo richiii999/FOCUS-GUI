@@ -96,19 +96,22 @@ def Chatting(user_input: str) -> str:
     response = PromptAI(user_input)
     return response
 
-def FindBetween(s:str, start:str, end:str) -> str:
+def FindBetween(s:str, start:str, end:str) -> str: # Finds s between start:end
     return s.split(start)[1].split(end)[0]
 
-def FormatActions(actionsList:str):
+def FormatActions(actionsList:str) -> dict: # Takes response from GenerateActions and tries to format it
+    # This is bad since the ai response not deterministic, we basically just ask it nicely to format a certain way.
     formattedActions = {}
 
-    for line in actionsList: # 
+    for line in actionsList: # Each list item into dict
         formattedActions[FindBetween(line, "**", "**")] = FindBetween(line, ":", ".")
 
-def GenerateActions(numActions:int, formatted:bool=false) -> str: 
+    return formattedActions
+
+def GenerateActions(numActions:int, formatted:bool=false): 
     """Prompts the AI to generate a list of N actions
-    if formatted, returns the label and desc separately. 
-    otherwise returns the raw response"""
+    if formatted, returns the label and desc in a dict. 
+    otherwise returns the raw response as a str"""
     
     print("Getting action space via RAG...")
     with open('./Prompts/Para/GenerateActions.txt', 'r') as f1:
@@ -119,7 +122,5 @@ def GenerateActions(numActions:int, formatted:bool=false) -> str:
 
     response = API.chat_with_collection(API.Models[modelNum], TempContext, API.KBIDs[0])['choices'][0]['message']['content']
     
-    if formatted:
-        
-    else: return response
-
+    return FormatActions(response) if formatted else response
+    
