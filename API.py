@@ -1,4 +1,5 @@
 import requests
+import Tools # TODO Only need UserInput(), but "from Tools import UserInput" not working
 
 ### Open-WebUI Settings
 adminToken = ''
@@ -32,10 +33,14 @@ def delete_knowledge(kbid:str):
     return requests.delete(url, headers=defaultHeader).json()
 
 ### Keys and links
-KBIDs = [ # TODO change to dict perhaps
+KBIDs = []
+
+disableKB = Tools.UserInput("Disable KB's? (y/N): ", ["y","n"])
+if not disableKB: # Allows API import without setting up the whole thing
+    KBIDs = [ # TODO change to dict perhaps
     create_knowledge('Expert', 'asdf')['id'], 
     create_knowledge('Study', 'asdf')['id']
-]
+    ]
 
 ### API
 def chat_with_model(model, context):

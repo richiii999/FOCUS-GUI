@@ -12,9 +12,9 @@ def sanitize(s: str) -> str:
     return s
 
 def UserInput(inputPrompt, validinput=None) -> str: 
-    """Input() but it must be within validInput"""
-    i = input(inputPrompt)
-    while i not in validinput: i = input("Invalid input, try again\n" + inputPrompt)
+    """Input() but it must be within validInput (not case sensitive)"""
+    i = input(inputPrompt).lower()
+    while i not in validinput: i = input("Invalid input, try again\n" + inputPrompt).lower()
     return i
 
 # From: https://stackoverflow.com/questions/3368969/find-string-between-two-substrings
