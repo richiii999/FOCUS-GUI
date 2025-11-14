@@ -43,12 +43,6 @@ AB.UpdateButton(3, "SLM Hello", lambda e: Chat.send_message("Say Hello")) # AI s
 input("Test 4: Pull from action list")
 rawResponse = SLM.GenerateActions(3,False) # Generate 3 actions
 
-# rawResponse = """testline
-# 1. **Task1**: Say 'Task1'.
-# 2. **Task2**: Say 'Task2'.
-# 3. **Task3**: Say 'Task3'.
-# testtest"""
-
 formattedResponse = Tools.FormatActions(rawResponse) # Put them in a dict
 print(f"Generated Actions:\n{rawResponse}")
 
@@ -62,4 +56,4 @@ AB.UpdateButton(4, label, lambda e: Chat.send_message("Instruct the user to perf
 
 
 # Start
-# root.mainloop()
+root.mainloop()
