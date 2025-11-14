@@ -52,11 +52,12 @@ formattedResponse = Tools.FormatActions(rawResponse) # Put them in a dict
 print(f"Generated Actions:\n{rawResponse}")
 
 from random import randrange
-randomAction = list(formattedResponse)[randrange(3)] # Randomly pick one of 3 actions
 
+chosenNum = randrange(3) # Randomly pick one of 3 actions
+label = list(formattedResponse)[chosenNum]
+desc = list(formattedResponse.values())[chosenNum]
 
-
-AB.UpdateButton(4, randomAction)
+AB.UpdateButton(4, label, lambda e: Chat.send_message(desc))
 
 
 root.mainloop()
