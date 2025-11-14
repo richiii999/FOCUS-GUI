@@ -5,4 +5,8 @@ import API
 import SLMResponse as SLM
 
 SLM.StartChatting() # Initialize the models list
-print(SLM.GenerateActions(5)) # Prompt the AI for some actions
+print("unformatted=\n"+SLM.GenerateActions(3,False)) # Prompt the AI for some actions
+
+print("formatted=")
+for k,v in SLM.GenerateActions(3,True):
+    print(f"{k} : {v}")
