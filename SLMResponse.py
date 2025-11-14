@@ -4,18 +4,21 @@ import sys
 import time
 import subprocess # manages subprocess I/O (ollama / webui servers, sensors, and ffmpeg)
 
+import Tools # Contains string manipulation stuff
 import API # ./API.py: Contains API calls to webui
+
+
 context = []
 iterDelay = 5
 modelNum = 1 # Which model from API.Models is being used?
 
 def PromptAI(prompt) -> str:
     global context
-    context.append({"role":"user", "content":sanitize(prompt)})
+    context.append({"role":"user", "content":Tools.sanitize(prompt)})
     response = API.chat_with_collection(API.Models[modelNum], context, API.KBIDs[1])
 
     response = response['choices'][0]['message']['content']
-    context.append({"role":"assistant", "content":sanitize(response)})
+    context.append({"role":"assistant", "content":Tools.sanitize(response)})
 
     return response
 
@@ -29,14 +32,14 @@ def EndStudySession(): # Writes the response to summaryPrompt into the StudyHist
 
     with open('./KB/StudyHistory.txt', 'a') as f1, open('./LLM/SummaryPrompt.txt', 'r') as p: 
         print('Generating Summary...')
-        f1.write('\n' + PromptAI(ReadFileAsLine(p))) # Prompt Summary, append it to history file
+        f1.write('\n' + PromptAI(Tools.ReadFileAsLine(p))) # Prompt Summary, append it to history file
     with open('./KB/StudyHistory.txt', 'r') as f1, open('./KB/Knowledge.txt', 'w') as f2, open('./LLM/KnowledgePrompt.txt', 'r') as p:
         global context
         context = [] # reset the context
 
         f2.truncate(0) # Replace old knowledge with new knowledge
         print('Generating Knowledge...')
-        f2.write(PromptAI(ReadFileAsLine(p) + ReadFileAsLine(f1)))
+        f2.write(PromptAI(Tools.ReadFileAsLine(p) + Tools.ReadFileAsLine(f1)))
 
     print('Clearing old knowledge base files...')
     for i in API.KBIDs: API.delete_knowledge(i) # Delete knowledge bases
@@ -44,21 +47,6 @@ def EndStudySession(): # Writes the response to summaryPrompt into the StudyHist
     subprocess.run("cd ./.open-webui/vector_db && rm -r `ls | grep -v 'chroma.sqlite3'`", shell=True)
 
     print("\nExiting...\n")
-
-def ReadFileAsLine(f) -> str:
-    s = ''
-    for line in f.readlines(): s += sanitize(line).replace('\n',' ')
-    return s
-
-def sanitize(s) -> str: # Remove characters that cause issues from a str
-    s = s.replace("\'", "")
-    s = s.replace("\"", "")
-    return s
-
-def UserInput(inputPrompt, validinput=None) -> str: # User input verification
-    i = input(inputPrompt)
-    while i not in validinput: i = input("Invalid input, try again\n" + inputPrompt)
-    return i
 
 def Sense() -> str: # Gather output from the sensors
     sensorData = f"Time = {int(time.time() - startTime)} minutes, Aggregated Sensor data:\n"
@@ -69,7 +57,7 @@ def Sense() -> str: # Gather output from the sensors
 
 def DistractionDetection(sensorData) -> str: # Prompt the AI WITHOUT CONTEXT for a 'yes' or 'no' response
     inp = "Based on the following sensor data, is the user in anyway not focused? 'yes' or 'no' only\n" + sensorData
-    resp = API.chat_with_model(API.Models[modelNum], [{"role":"user", "content":sanitize(inp)}])['choices'][0]['message']['content'].lower().replace('.','')
+    resp = API.chat_with_model(API.Models[modelNum], [{"role":"user", "content":Tools.sanitize(inp)}])['choices'][0]['message']['content'].lower().replace('.','')
     return resp
 
 
@@ -84,20 +72,11 @@ def StartChatting(response=""):
     
     else: modelNum = int(response) # Select model from the list
 
-def sanitize(s: str) -> str:
-    """Sanitize the input string by removing problematic characters."""
-    s = s.replace("\'", "")
-    s = s.replace("\"", "")
-    return s
-
 def Chatting(user_input: str) -> str:
     """Handles the main chat loop where the user interacts with the model."""
     # Get the AI response from PromptAI
     response = PromptAI(user_input)
     return response
-
-def FindBetween(s:str, start:str, end:str) -> str: # Finds s between start:end
-    return s.split(start)[1].split(end)[0]
 
 def FormatActions(actionsList:str) -> dict: # Takes response from GenerateActions and tries to format it
     # The response should be something like "1. **Name**: desc."
@@ -111,14 +90,14 @@ def FormatActions(actionsList:str) -> dict: # Takes response from GenerateAction
 
     return formattedActions
 
-def GenerateActions(numActions:int, formatted:bool=false): 
+def GenerateActions(numActions:int, formatted:bool=False): 
     """Prompts the AI to generate a list of N actions
     if formatted, returns the label and desc in a dict. 
     otherwise returns the raw response as a str"""
     
     print("Getting action space via RAG...")
     with open('./Prompts/Para/GenerateActions.txt', 'r') as f1:
-        prompt = ReadFileAsLine(f1)
+        prompt = Tools.ReadFileAsLine(f1)
         prompt = prompt.replace("NUMACTIONS", f"{numActions}")
 
         TempContext = [{"role":"user", "content":prompt}] 
