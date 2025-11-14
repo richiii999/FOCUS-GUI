@@ -16,3 +16,4 @@ for k,v in formattedResponse:
     print(f"{k} : {v}")
 
 
+print(f"dict={formattedResponse}")
