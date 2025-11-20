@@ -1,16 +1,22 @@
-# main.py
+# SLMResponse.py
+# Contains funcs to prompt the AI and interact with the API & Sensors
 
 import sys
 import time
 import subprocess # manages subprocess I/O (ollama / webui servers, sensors, and ffmpeg)
 
 import Tools # Contains string manipulation stuff
-import API # ./API.py: Contains API calls to webui
-
+import API # Contains API calls to webui
 
 context = []
 iterDelay = 5
 modelNum = 1 # Which model from API.Models is being used?
+
+PDFV = None # Optional reference to the pdf viewer (so we can get the curr pageNum)
+sensorFiles = [ # references to sensor log files
+    "./SensorLogs/faceTracker.txt",
+    "./SensorLogs/gazeTracker.txt"
+] 
 
 def PromptAI(prompt) -> str:
     global context
@@ -56,21 +62,20 @@ def Sense() -> str: # Gather output from the sensors
     return sensorData
 
 def DistractionDetection(sensorData) -> str: # Prompt the AI WITHOUT CONTEXT for a 'yes' or 'no' response
-    inp = "Based on the following sensor data, is the user in anyway not focused? 'yes' or 'no' only\n" + sensorData
-    resp = API.chat_with_model(API.Models[modelNum], [{"role":"user", "content":Tools.sanitize(inp)}])['choices'][0]['message']['content'].lower().replace('.','')
+    prompt = "Based on the following sensor data, is the user in anyway not focused? 'yes' or 'no' only\n" + sensorData
+    resp = API.chat_with_model(API.Models[modelNum], [{"role":"user", "content":Tools.sanitize(prompt)}])['choices'][0]['message']['content'].lower().replace('.','')
     return resp
 
-
-def StartChatting(response=""):
+def StartChatting(selectModel=-1):
     """Starts a chat session by either listing available models or selecting one."""
     global modelNum
-    if response == "": 
+    if selectModel == -1: 
         API.Models += subprocess.check_output( # Fetch available models from the docker container
             "sudo docker exec -it 34e768ba1a4f ollama list | grep -v NAME | awk '{print $1}'", 
             shell=True).decode('utf-8').split('\n')[:-1] # List models, formatted
         return API.Models # Return the models list for the GUI to use
     
-    else: modelNum = int(response) # Select model from the list
+    else: modelNum = int(selectModel) # Select the given model from the list
 
 def Chatting(user_input: str) -> str:
     """Handles the main chat loop where the user interacts with the model."""
@@ -93,4 +98,13 @@ def GenerateActions(numActions:int=3, formatted:bool=False):
     response = API.chat_with_collection(API.Models[modelNum], TempContext, API.KBIDs[0])['choices'][0]['message']['content']
     
     return FormatActions(response) if formatted else response
-    
+
+def PrependPrompt(prompt) -> str: # Prepend information to the given prompt
+        prepend = "--- Prepended information for AI ---\n"
+        
+        if PDFV: prepend += f"Current page is: {PDFV.page_num}\n"
+        for path in sensorFiles: prepend += f"{Tools.readLastLine(path)}\n" 
+
+        prepend += "--- END prepended information for AI ---\n"
+        return prepend + prompt
+

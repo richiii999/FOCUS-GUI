@@ -223,23 +223,11 @@ class ChatWindow(tk.Frame):
         self.chat_area.config(state=tk.DISABLED)
         self.chat_area.see(tk.END)
 
-    def PrependPrompt(self, prompt) -> str: # Prepend information to the given prompt
-        prepend = "--- Prepended information for AI ---\n"
-        if self.PDFV: prepend += f"Current page is: {self.PDFV.page_num}\n"
 
-        prepend += "--- prepended information for AI END---\n"
-        return prepend + prompt
-
-    # ---------- Chat send ----------
     def send_message(self, message, visible=True):
         SLMResponse.StartChatting()
-        message = message.strip()
-        if message: # Non empty message
-            message = self.PrependPrompt(message) # Prepend information for the AI
-            if visible:
-                visMessage = message
-                visMessage = visMessage.partition("END---")[2]
-                self._insert_user(visMessage)
+        if message.strip(): # Non empty message
+            if visible: self._insert_user(message)
 
             response = SLMResponse.Chatting(message)
             self._insert_ai(response)
@@ -247,5 +235,5 @@ class ChatWindow(tk.Frame):
 
     def start_chat(self):
         models = SLMResponse.StartChatting()
-        model_num = tk.simpledialog.askstring("Model Selection", f"Select a model: {models}")
+        model_num = tk.simpledialog.askinteger("Model Selection", f"Select a model: {models}")
         SLMResponse.StartChatting(model_num)

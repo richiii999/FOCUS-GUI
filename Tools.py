@@ -1,5 +1,7 @@
 # String Manipulation and other useful funcs
 
+import os # file seeking
+
 def ReadFileAsLine(f) -> str:
     s = ''
     if isinstance(f, str): # f is a file path not a file pointer
@@ -42,3 +44,13 @@ def FormatActions(actionsList:str) -> dict: # Takes response from SLM.GenerateAc
         formattedActions[FindBetween(line, "**", "**")] = FindBetween(line, ":", ".")
 
     return formattedActions
+
+def readLastLine(path): # From https://stackoverflow.com/questions/46258499/how-to-read-the-last-line-of-a-file-in-python#54278929
+with open(path, 'rb') as f:
+    try: # catch OSError in case of a one line file 
+        f.seek(-2, os.SEEK_END)
+        while (f.read(1) != b'\n'): f.seek(-2, os.SEEK_CUR)
+    
+    except OSError: f.seek(0)
+    
+    return f.readline().decode()
