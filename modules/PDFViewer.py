@@ -5,6 +5,8 @@ import fitz  # PyMuPDF
 import threading
 from PIL import Image, ImageTk  # For handling images in Tkinter
 
+import API # For uploading files to KB
+
 class PDFViewer(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
@@ -45,15 +47,24 @@ class PDFViewer(tk.Frame):
 
         self.grid(row=0, column=0, sticky='news')
 
+        self.currFile = "" # Filepath of the current file, used to upload to KB when changed.
+
     def load_pdf(self):
         # Open a file dialog to choose a PDF
-        file_path = tk.filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
-        if file_path:
+        self.currFile = tk.filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
+        if self.currFile:
             # Open the PDF with PyMuPDF
-            self.pdf_document = fitz.open(file_path)
+            self.pdf_document = fitz.open(self.currFile)
             self.page_num = 0
             # Start a background thread to render the first page
             threading.Thread(target=self.render_page, daemon=True).start()
+
+            self.KBUpdate(self.currFile) # Add this file to the KB
+
+    def KBUpdate(self, fp):
+        fileID = API.upload_file(fp)['meta']['collection_name'][5:] # TODO ID is directly availible in another part of the dict without string slicing
+        API.add_file_to_knowledge(fileID, API.KBIDs[i])
+        print(f'Uploaded file: {fp} : {fileID} to knowledge base {API.KBIDs[i]}')
 
     def render_page(self):
         # This function runs in a background thread to load the page and render it
