@@ -1,12 +1,12 @@
 # String Manipulation and other useful funcs
 
 def ReadFileAsLine(f) -> str:
-    if isinstance(f, str): 
+    if isinstance(f, str): # f is a file path not a file pointer
         with open("./Prompts/QuizPrompt.txt", 'r') as f1:
             s = ''
             for line in f1.readlines(): s += sanitize(line).replace('\n',' ')
             return s
-    else:
+    else: # assuming f is a file pointer
         s = ''
         for line in f1.readlines(): s += sanitize(line).replace('\n',' ')
         return s

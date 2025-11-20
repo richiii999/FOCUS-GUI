@@ -42,6 +42,6 @@ AB.buttons[1].bind('<ButtonPress-1>', lambda e: Chat.start_break())
 
 # Summary
 AB.buttons[2].config(text="Summary")
-AB.buttons[2].bind('<ButtonPress-1>', lambda e: Chat.send_message("Give me a Summary of the previous slides", False))
+AB.buttons[2].bind('<ButtonPress-1>', lambda e: Chat.send_message(Tools.ReadFileAsLine("./Prompts/SummaryAction.txt"), False))
 
 root.mainloop()
