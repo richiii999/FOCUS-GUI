@@ -28,7 +28,7 @@ PDFV = PDFViewer.PDFViewer(Base.L)
 AB = ActionButtons.ActionButtons(Base.TR, 6)
 
 # Add Chat Window in bottom-right frame
-Chat = ChatWindow.ChatWindow(Base.BR)
+Chat = ChatWindow.ChatWindow(Base.BR, PDFV)
 
 # Action button bindings
 AB.buttons[0].config(text="Quiz")
