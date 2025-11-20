@@ -8,7 +8,7 @@ def ReadFileAsLine(f) -> str:
             return s
     else: # assuming f is a file pointer
         s = ''
-        for line in f1.readlines(): s += sanitize(line).replace('\n',' ')
+        for line in f.readlines(): s += sanitize(line).replace('\n',' ')
         return s
 
 def sanitize(s: str) -> str:
