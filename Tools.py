@@ -1,15 +1,14 @@
 # String Manipulation and other useful funcs
 
 def ReadFileAsLine(f) -> str:
+    s = ''
     if isinstance(f, str): # f is a file path not a file pointer
-        with open("./Prompts/QuizPrompt.txt", 'r') as f1:
-            s = ''
+        with open(f, 'r') as f1:
             for line in f1.readlines(): s += sanitize(line).replace('\n',' ')
-            return s
     else: # assuming f is a file pointer
-        s = ''
         for line in f1.readlines(): s += sanitize(line).replace('\n',' ')
-        return s
+        
+    return s
 
 def sanitize(s: str) -> str:
     """Sanitize the input string by removing problematic characters."""
