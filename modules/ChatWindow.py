@@ -237,7 +237,9 @@ class ChatWindow(tk.Frame):
         if message: # Non empty message
             message = self.PrependPrompt(message) # Prepend information for the AI
             if visible:
-                self._insert_user(message.partition("END---")[2])
+                visMessage = message
+                visMessage = visMessage.partition("END---")[2]
+                self._insert_user(visMessage)
 
             response = SLMResponse.Chatting(message)
             self._insert_ai(response)
