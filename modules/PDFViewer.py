@@ -17,10 +17,10 @@ class PDFViewer(tk.Frame):
         self.canvas.pack(fill=tk.BOTH, expand=True)
 
         # Add left and right navigation buttons inside the frame
-        self.left_button = tk.Button(self, text="<", command=(lambda e: self.changePage(direction=-1)), bg='#333', fg='white', font=('Arial', 14))
+        self.left_button = tk.Button(self, text="<", command=(lambda e: self.changePage(e, direction=-1)), bg='#333', fg='white', font=('Arial', 14))
         self.left_button.pack(side=tk.LEFT, padx=10, pady=10)
 
-        self.right_button = tk.Button(self, text=">", command=(lambda e: self.changePage(direction=1)), bg='#333', fg='white', font=('Arial', 14))
+        self.right_button = tk.Button(self, text=">", command=(lambda e: self.changePage(e, direction=1)), bg='#333', fg='white', font=('Arial', 14))
         self.right_button.pack(side=tk.RIGHT, padx=10, pady=10)
 
         # Load button to open the PDF file inside the frame
@@ -39,8 +39,8 @@ class PDFViewer(tk.Frame):
         self.page_num = 0
 
         # Bind arrow keys for navigation
-        self.master.bind("<Left>", lambda e: self.changePage(direction=-1))
-        self.master.bind("<Right>", lambda e: self.changePage(direction=1))
+        self.master.bind("<Left>", lambda e: self.changePage(e, direction=-1))
+        self.master.bind("<Right>", lambda e: self.changePage(e, direction=1))
 
         # Bind resize event
         self.master.bind("<Configure>", self.on_resize)
