@@ -3,8 +3,10 @@ from tkinter import simpledialog
 import SLMResponse
 
 class ChatWindow(tk.Frame):
-    def __init__(self, master):
+    def __init__(self, master, PDFViewer=None):
         super().__init__(master)
+
+        self.PDFV = PDFViewer # Optional reference to the pdf viewer
 
         # Chat area (monospace so ASCII art/stickman lines align)
         self.chat_area = tk.Text(master, wrap="word", height=20, width=60,
@@ -221,10 +223,19 @@ class ChatWindow(tk.Frame):
         self.chat_area.config(state=tk.DISABLED)
         self.chat_area.see(tk.END)
 
+    def PrependPrompt(self, prompt) -> str: # Prepend information to the given prompt
+        prepend = "--- Prepended information for AI ---\n"
+        if PDFV: prepend += f"Current page is: {PDFV.page_num}\n"
+
+        prepend += "--- END prepended information for AI ---\n"
+        return prepend + prompt
+
     # ---------- Chat send ----------
     def send_message(self, message, visible=True):
         SLMResponse.StartChatting()
-        if message.strip():
+        message = message.strip()
+        if message:
+            message = self.PrependPrompt(message)
             if visible:
                 self._insert_user(message)
 
