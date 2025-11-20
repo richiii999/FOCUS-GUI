@@ -30,9 +30,8 @@ AB = ActionButtons.ActionButtons(Base.TR, 6)
 # Add Chat Window in bottom-right frame
 Chat = ChatWindow.ChatWindow(Base.BR)
 
-curr = event.widget
-parentName = curr.winfo_parent()
-parent     = curr._nametowidget(parentName)
+parentName = Chat.winfo_parent()
+parent     = Chat._nametowidget(parentName)
 siblings = parent.winfo_children()
 
 print(siblings)
