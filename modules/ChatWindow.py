@@ -227,17 +227,17 @@ class ChatWindow(tk.Frame):
         prepend = "--- Prepended information for AI ---\n"
         if self.PDFV: prepend += f"Current page is: {self.PDFV.page_num}\n"
 
-        prepend += "--- END prepended information for AI ---\n"
+        prepend += "--- prepended information for AI END---\n"
         return prepend + prompt
 
     # ---------- Chat send ----------
     def send_message(self, message, visible=True):
         SLMResponse.StartChatting()
         message = message.strip()
-        if message:
-            message = self.PrependPrompt(message)
+        if message: # Non empty message
+            message = self.PrependPrompt(message) # Prepend information for the AI
             if visible:
-                self._insert_user(message)
+                self._insert_user(messages.partition("END---")[2])
 
             response = SLMResponse.Chatting(message)
             self._insert_ai(response)
