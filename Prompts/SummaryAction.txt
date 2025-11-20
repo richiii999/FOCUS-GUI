@@ -3,3 +3,4 @@ In the next message, when you create the summary:
 Format the summary in bullet points
 Keep the response short, 15 lines max
 Include key information over less useful or repeated information
+When you ask the user, simply write "Please specify what topic to summarize:"
