@@ -27,23 +27,47 @@ class QuizWindow(tk.Toplevel):
         """Parse the quiz text into questions and answers."""
         questions_and_answers = []
         
-        # New regex pattern to match questions and answers
-        question_blocks = re.findall(r"(\d+\. [^\n]+)\n(a\..+)\n(b\..+)\n(c\..+)\n(d\..+)\nCorrect Answer: ([a-d])", quiz_text)
+        # Split the quiz text by newlines to handle each line separately
+        lines = quiz_text.split('\n')
+        
+        current_question = None
+        answers = []
+        correct_answer = None
+        
+        # Iterate over the lines
+        for line in lines:
+            line = line.strip()  # Remove any extra spaces
+            
+            # If the line starts with a number followed by a period, it's a new question
+            if re.match(r"^\d+\.", line):
+                if current_question is not None:  # If we have a previous question, save it
+                    questions_and_answers.append({
+                        "question": current_question,
+                        "options": answers,
+                        "correct_answer": correct_answer
+                    })
+                
+                # Start a new question
+                current_question = line
+                answers = []
+                correct_answer = None
+            
+            # If the line contains an answer choice (A, B, C, D), capture it
+            elif re.match(r"^[A-Da-d]\)", line):
+                answers.append(line[3:].strip())  # Skip "A)", "B)", etc., and get the answer text
+                
+            # If the line contains the correct answer, capture it
+            elif line.lower().startswith("correct answer:"):
+                correct_answer = line.split(":")[1].strip().lower()  # Extract the letter of the correct answer
 
-        print("Found question blocks:", question_blocks)  # Debugging print
-
-        for question_block in question_blocks:
-            question = question_block[0].strip()  # Question text
-            answers = [question_block[1].strip(), question_block[2].strip(), question_block[3].strip(), question_block[4].strip()]  # Answer options
-            correct_answer = question_block[5].strip()  # Correct answer (a, b, c, or d)
-
+        # Add the last question if it exists
+        if current_question is not None:
             questions_and_answers.append({
-                "question": question,
+                "question": current_question,
                 "options": answers,
                 "correct_answer": correct_answer
             })
         
-        print(quiz_text)
         print("Question and Answers: ")
         print(questions_and_answers)
         return questions_and_answers
