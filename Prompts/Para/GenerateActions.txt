@@ -2,6 +2,7 @@ From the knowledge base and your knowledge about the user,
 Create a list of NUMACTIONS unique actions to take that may help the user reduce distractions while they are studying
 Prefer actions from the knowledge base.
 Phrase from the perspective of the student.
+The actions should be able to be performed while within the classroom. (cannot going outside)
 
 Please format the list items like this: "1. **Pomodoro Technique**: <1-2 sentence description>"
 that is, number the list, have a 1-2 word label surrounded by '**', and 1-2 sentence description.
