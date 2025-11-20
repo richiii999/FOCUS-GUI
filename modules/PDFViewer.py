@@ -17,10 +17,10 @@ class PDFViewer(tk.Frame):
         self.canvas.pack(fill=tk.BOTH, expand=True)
 
         # Add left and right navigation buttons inside the frame
-        self.left_button = tk.Button(self, text="<", command=(lambda e: self.changePage(e, direction=-1)), bg='#333', fg='white', font=('Arial', 14))
+        self.left_button = tk.Button(self, text="<", command=self.go_previous_page, bg='#333', fg='white', font=('Arial', 14))
         self.left_button.pack(side=tk.LEFT, padx=10, pady=10)
 
-        self.right_button = tk.Button(self, text=">", command=(lambda e: self.changePage(e, direction=1)), bg='#333', fg='white', font=('Arial', 14))
+        self.right_button = tk.Button(self, text=">", command=self.go_next_page, bg='#333', fg='white', font=('Arial', 14))
         self.right_button.pack(side=tk.RIGHT, padx=10, pady=10)
 
         # Load button to open the PDF file inside the frame
@@ -39,8 +39,8 @@ class PDFViewer(tk.Frame):
         self.page_num = 0
 
         # Bind arrow keys for navigation
-        self.master.bind("<Left>", lambda e: self.changePage(e, direction=-1))
-        self.master.bind("<Right>", lambda e: self.changePage(e, direction=1))
+        self.master.bind("<Left>", self.go_previous_page)
+        self.master.bind("<Right>", self.go_next_page)
 
         # Bind resize event
         self.master.bind("<Configure>", self.on_resize)
@@ -131,20 +131,6 @@ class PDFViewer(tk.Frame):
         if self.pdf_document and self.page_num < len(self.pdf_document) - 1:
             self.page_num += 1
             threading.Thread(target=self.render_page, daemon=True).start()
-
-    def changePage(self, event=None, direction=0):
-        # Go to the curr + direction page, if possible
-        if (self.pdf_document 
-        and self.page_num < len(self.pdf_document) - direction # Less than end if forward
-        and self.page_num + direction >= 0): # More than start if backward
-            
-            self.page_num += direction
-            threading.Thread(target=self.render_page, daemon=True).start()
-
-
-
-    ### Curr ^^ Combine these two funcs nd just use bool param forward / back. Then add func that changes sysprompt
-    ### Make para sysprompt or prepend block to all prompts or something. Maybe change that in chatintegration
 
     def on_resize(self, event):
         # This method is called when the window is resized
