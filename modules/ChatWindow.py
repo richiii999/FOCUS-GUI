@@ -225,7 +225,7 @@ class ChatWindow(tk.Frame):
 
     def PrependPrompt(self, prompt) -> str: # Prepend information to the given prompt
         prepend = "--- Prepended information for AI ---\n"
-        if PDFV: prepend += f"Current page is: {PDFV.page_num}\n"
+        if self.PDFV: prepend += f"Current page is: {self.PDFV.page_num}\n"
 
         prepend += "--- END prepended information for AI ---\n"
         return prepend + prompt
