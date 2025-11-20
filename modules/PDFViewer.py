@@ -63,8 +63,8 @@ class PDFViewer(tk.Frame):
 
     def KBUpdate(self, fp):
         fileID = API.upload_file(fp)['meta']['collection_name'][5:] # TODO ID is directly availible in another part of the dict without string slicing
-        API.add_file_to_knowledge(fileID, API.KBIDs[i])
-        print(f'Uploaded file: {fp} : {fileID} to knowledge base {API.KBIDs[i]}')
+        API.add_file_to_knowledge(fileID, API.KBIDs[1])
+        print(f'Uploaded file: {fp} : {fileID} to knowledge base {API.KBIDs[1]}')
 
     def render_page(self):
         # This function runs in a background thread to load the page and render it
