@@ -5,6 +5,8 @@ import tkinter as tk
 import SLMResponse
 from tkinter import ttk
 
+import Tools
+
 from modules import BaseFrames, ActionButtons, ChatWindow, PDFViewer, QuizModule
 
 # Setup Root window
@@ -33,7 +35,7 @@ Chat = ChatWindow.ChatWindow(Base.BR, PDFV)
 
 # Action button bindings
 AB.buttons[0].config(text="Quiz")
-AB.buttons[0].bind('<ButtonPress-1>', lambda e: QuizModule.QuizWindow(Chat, SLMResponse.Chatting("Generate a 5 question quiz about algebra")))
+AB.buttons[0].bind('<ButtonPress-1>', lambda e: QuizModule.QuizWindow(Chat, SLMResponse.Chatting(Tools.ReadFileAsLine("./Prompts/QuizPrompt.txt"))))
 
 AB.buttons[1].config(text="Break")
 AB.buttons[1].bind('<ButtonPress-1>', lambda e: Chat.start_break())

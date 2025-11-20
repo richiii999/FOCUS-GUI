@@ -8,9 +8,6 @@ class QuizWindow(tk.Toplevel):
         self.title("Algebra Quiz")
         self.geometry("400x400")
         
-        print("This is a test")
-        print(type(quiz_text))
-        print(quiz_text)
         # Parse the quiz text into questions and answers
         self.questions_and_answers = self.parse_quiz_text(quiz_text)
         self.current_question_index = 0
@@ -46,6 +43,7 @@ class QuizWindow(tk.Toplevel):
                 "correct_answer": correct_answer
             })
         
+        print(quiz_text)
         print("Question and Answers: ")
         print(questions_and_answers)
         return questions_and_answers

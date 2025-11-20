@@ -1,0 +1,5 @@
+Generate a 5 question multiple choice quiz about the algebra. 
+Format it like so:
+The questions are numbered, 
+Then the multiple choice answers are lettered. 
+Just give me the quiz, do not offer the solution.
