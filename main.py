@@ -33,10 +33,10 @@ def EndStudySession(): # Writes the response to summaryPrompt into the StudyHist
 
 def T_Sensors():
     try:
-    Sensors.StartSensors()
-    while True: 
-        print(Sensors.Sense())
-        time.sleep(Sensors.iterDelay)
+        Sensors.StartSensors()
+        while True: 
+            print(Sensors.Sense())
+            time.sleep(Sensors.iterDelay)
 
     except KeyboardInterrupt: Sensors.StopSensors()
 
