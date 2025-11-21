@@ -57,4 +57,5 @@ for f in procs.values():
 print("Starting sensors...") # Sensor processes which record data to be passed to the AI
 sensors = [subprocess.Popen(path.split(), stderr=subprocess.DEVNULL, stdout=log, stdin=subprocess.DEVNULL) for path,log in procs.items()]
 
-from tests import ChatIntegration # Start the GUI
+
+import GUI # Start the GUI

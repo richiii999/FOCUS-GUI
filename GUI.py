@@ -1,5 +1,5 @@
-import sys
-sys.path.append(".")  # Test scripts use modules too (run from toplevel tho)
+# GUI.py 
+# Uses our tkinter modules that create & assemble the frames 
 
 import tkinter as tk
 import SLMResponse
@@ -7,18 +7,7 @@ from tkinter import ttk
 
 import Tools
 
-from modules import BaseFrames, ActionButtons, ChatWindow, PDFViewer, QuizModule
-
-# Setup Root window
-root = tk.Tk()
-root.title("FOCUS")
-root.geometry('800x600')
-
-root.columnconfigure(0, weight=1)
-root.rowconfigure(0, weight=1)
-
-root.columnconfigure(0, weight=1)
-root.rowconfigure(0, weight=1)
+from modules import RootWindow, BaseFrames, ActionButtons, ChatWindow, PDFViewer, QuizModule
 
 # Add base frames
 Base = BaseFrames.BaseFrames(root)
