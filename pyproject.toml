@@ -3,9 +3,15 @@ name = "focus-gui"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = [
+    "dlib>=20.0.0",
     "fitz>=0.0.1.dev2",
+    "mediapipe>=0.10.21",
+    "numpy==1.26.4",
+    "opencv-python==4.10.0.82",
     "pillow>=12.0.0",
     "pymupdf>=1.26.5",
+    "scipy>=1.16.2",
+    "setuptools==70.0.0",
 ]
