@@ -17,6 +17,7 @@ for f in procs.values():
     f.write('The user seems focused\n') # Placeholder first log entry
 
 def StopSensors():
+    global ffmpeg
     print('Stopping sensors...')
     ffmpeg.terminate()
     for s in sensors[1:]: s.terminate()
@@ -30,6 +31,8 @@ def Sense() -> str: # Gather output from the sensors
     return sensorData
 
 def StartSensors():
+    global ffmpeg
+    global sensors
     print("Starting FFMPEG...") ### Sensors & Subprocesses # Setup virtual cam devices and split original cam input to them
     ffmpeg = subprocess.Popen('ffmpeg  -i /dev/video0 -f v4l2 -vcodec rawvideo -s 640x360 /dev/video8 -f v4l2 -vcodec rawvideo -s 640x360 /dev/video9 -loglevel quiet'.split(), stdin=subprocess.DEVNULL)
     time.sleep(2) # Couple sec buffer for ffmpeg to start 
