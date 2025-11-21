@@ -10,7 +10,7 @@ def EndStudySession(): # Writes the response to summaryPrompt into the StudyHist
     print('\nEnding study session...')
 
     print('Stopping sensors...')
-    ffmpeg.terminate() # ffmpeg sometimes doesnt terminate, so just spam it 
+    ffmpeg.terminate()
     for s in sensors[1:]: s.terminate()
     for f in procs.values(): f.close() 
 
@@ -32,4 +32,4 @@ for f in procs.values():
 print("Starting sensors...") # Sensor processes which record data to be passed to the AI
 sensors = [subprocess.Popen(path.split(), stderr=subprocess.DEVNULL, stdout=log, stdin=subprocess.DEVNULL) for path,log in procs.items()]
 
-from tests import ChatIntegration
+from tests import ChatIntegration # Start the GUI
