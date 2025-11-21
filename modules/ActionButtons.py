@@ -14,7 +14,7 @@ class ActionButtons(tk.Frame):
         for i in range(buttonsCount): # Create each button
             currRow = int(i/perRow)
             currCol = i%perRow
-            print(f" creating button_{i} @ {currRow},{currCol}")
+            # print(f" creating button_{i} @ {currRow},{currCol}")
 
             self.buttons.append(tk.Button(self, text=f"Button_{str(i)}", bg="red", relief='ridge', borderwidth=3))
             
@@ -31,7 +31,7 @@ class ActionButtons(tk.Frame):
             lastRow.rowconfigure(0, weight=1)
 
             for i in range(buttonsCount - (numInLastRow), buttonsCount): 
-                print(f" resizing button_{i}")
+                # print(f" resizing button_{i}")
                 self.buttons[i].grid_forget() # unGrid the last row of buttons
                 self.buttons[i] = clone(self.buttons[i], lastRow)  
                 
