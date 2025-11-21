@@ -13,6 +13,13 @@ def EndStudySession(): # Writes the response to summaryPrompt into the StudyHist
     for s in sensors[1:]: s.terminate()
     for f in procs.values(): f.close() 
 
+def Sense() -> str: # Gather output from the sensors
+    sensorData = f"Time = {int(time.time() - startTime)} minutes, Aggregated Sensor data:\n"
+    for f in procs.values(): # Get most recent output per sensor 
+        f.seek(0)
+        sensorData += f.readlines()[-1]
+    return sensorData
+
 startTime, initDelay, iterDelay = time.time(), 3, 5 # Timing delays
 
 print("Starting FFMPEG...") ### Sensors & Subprocesses # Setup virtual cam devices and split original cam input to them
@@ -31,5 +38,10 @@ for f in procs.values():
 try:
     print("Starting sensors...") # Sensor processes which record data to be passed to the AI
     sensors = [subprocess.Popen(path.split(), stderr=subprocess.DEVNULL, stdout=log, stdin=subprocess.DEVNULL) for path,log in procs.items()]
+    
+    while True: 
+        print(Sense())
+        time.sleep(iterDelay)
+
 finally:
     EndStudySession()
