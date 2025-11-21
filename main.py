@@ -21,8 +21,8 @@ ffmpeg = subprocess.Popen('ffmpeg  -i /dev/video0 -f v4l2 -vcodec rawvideo -s 64
 time.sleep(2) # Couple sec buffer for ffmpeg to start 
 
 procs = { # {path : Log file}, sensor output is periodically read from here and given to the AI
-    'python ./Sensors/PythonFaceTracker/main.py'    : open('./Logs/faceTracker.txt', 'r+'),
-    'python ./Sensors/PythonGazeTracker/example.py' : open('./Logs/gazeTracker.txt', 'r+')
+    'python ./Sensors/PythonFaceTracker/main.py'    : open('./SensorLogs/faceTracker.txt', 'r+'),
+    'python ./Sensors/PythonGazeTracker/example.py' : open('./SensorLogs/gazeTracker.txt', 'r+')
 }
 
 for f in procs.values(): 
