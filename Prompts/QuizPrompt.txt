@@ -2,6 +2,5 @@ Generate a 5 question multiple choice quiz about the algebra.
 Format it like so:
 The questions are numbered, 
 Then the multiple choice answers are lettered. 
-Just give me the quiz, do not offer the solution.
 
-Also, just give me the questions and answers, don't say "Here's your 5-question multiple-choice quiz on algebra"
+Also, just give me the question, answers, and the correct answer, give me the correct answer as "correct answer: x", then put the multiple choice letter in the x positiong. Don't say "Here's your 5-question multiple-choice quiz on algebra". 

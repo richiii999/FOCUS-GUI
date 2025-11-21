@@ -13,6 +13,10 @@ class QuizWindow(tk.Toplevel):
         self.current_question_index = 0
         self.selected_answer = None
 
+        # This will store the user's answers
+        self.user_answers = []  # Store selected answers for each question
+        self.user_results = []  # Store whether each answer was correct
+
         # Display the first question and answers
         self.display_question()
 
@@ -68,6 +72,7 @@ class QuizWindow(tk.Toplevel):
                 "correct_answer": correct_answer
             })
         
+        print(quiz_text)
         print("Question and Answers: ")
         print(questions_and_answers)
         return questions_and_answers
@@ -82,22 +87,24 @@ class QuizWindow(tk.Toplevel):
         question_text = question_data["question"]
         options = question_data["options"]
 
-        # Clear any previous question or options
+        # Clear previous question and answer buttons (but leave result_label intact)
         for widget in self.winfo_children():
-            widget.destroy()
+            if isinstance(widget, tk.Button):  # Only destroy buttons (answers & submit)
+                widget.destroy()
 
-        # Display the question
-        question_label = tk.Label(self, text=question_text, font=("Arial", 14))
-        question_label.pack(pady=10)
+        # Display the question (Left-aligned)
+        question_label = tk.Label(self, text=question_text, font=("Arial", 14), anchor="w", justify="left")
+        question_label.pack(pady=10, padx=20)  # You can adjust padx to control left spacing
 
         # Display the current question number
         question_counter_label = tk.Label(self, text=f"Question {self.current_question_index + 1} of {len(self.questions_and_answers)}", font=("Arial", 10))
-        question_counter_label.pack(pady=5)
+        question_counter_label.pack(pady=5, padx=20)
 
         # Create buttons for each of the options (a, b, c, d)
         self.answer_buttons = []
         for option in options:
-            button = tk.Button(self, text=option, width=20, height=2, font=("Arial", 12), command=lambda opt=option: self.select_answer(opt))
+            button = tk.Button(self, text=option, width=20, height=2, font=("Arial", 12), 
+                               command=lambda opt=option: self.select_answer(opt))
             button.pack(pady=5)
             self.answer_buttons.append(button)
 
@@ -106,8 +113,14 @@ class QuizWindow(tk.Toplevel):
         self.submit_button.pack(pady=20)
 
     def select_answer(self, answer):
-        """Store the selected answer."""
+        """Store the selected answer and change button color."""
         self.selected_answer = answer
+
+        # Change the background color of the clicked button
+        for button in self.answer_buttons:
+            button.config(bg="lightgray")  # Reset all buttons to default color
+        self.focus_button = [button for button in self.answer_buttons if button.cget("text") == answer][0]
+        self.focus_button.config(bg="lightblue")  # Highlight the clicked button
 
     def check_answer(self):
         """Check if the selected answer is correct."""
@@ -117,10 +130,18 @@ class QuizWindow(tk.Toplevel):
 
         correct_answer = self.questions_and_answers[self.current_question_index]["correct_answer"]
 
-        if self.selected_answer == correct_answer:
-            self.result_label.config(text="Correct!", fg="green")
+        # Save the user's answer and whether it was correct
+        self.user_answers.append(self.selected_answer)
+        self.user_results.append(self.selected_answer.lower() == correct_answer)
+
+        # Check if result_label exists before attempting to update it
+        if hasattr(self, 'result_label') and self.result_label.winfo_exists():
+            if self.selected_answer.lower() == correct_answer:
+                self.result_label.config(text="Correct!", fg="green")
+            else:
+                self.result_label.config(text=f"Wrong! Correct answer: {correct_answer}", fg="red")
         else:
-            self.result_label.config(text=f"Wrong! Correct answer: {correct_answer}", fg="red")
+            print("result_label is not available!")
 
         # Wait a moment before moving to the next question
         self.after(1000, self.next_question)
@@ -138,6 +159,15 @@ class QuizWindow(tk.Toplevel):
     def finish_quiz(self):
         """Finish the quiz and show a final message."""
         messagebox.showinfo("Quiz Finished", "You've completed the quiz!")
+        
+        # Display the results (user's answers and correctness)
+        self.show_results()
+        
         self.destroy()  # Close the quiz window
 
-
+    def show_results(self):
+        """Display the user's answers and correctness."""
+        print("Your Answers:")
+        for i, (answer, correct) in enumerate(zip(self.user_answers, self.user_results)):
+            correct_str = "Correct" if correct else "Incorrect"
+            print(f"Q{i+1}: {answer} ({correct_str})")
