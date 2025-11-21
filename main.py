@@ -3,6 +3,7 @@
 import sys
 import time
 import subprocess # manages subprocess I/O (ollama / webui servers, sensors, and ffmpeg)
+import threading # Multithread the sensors and GUI separately
 
 import API # Contains API calls to webui
 from modules import Sensors # Controls the face+gaze trackers
@@ -30,18 +31,27 @@ def EndStudySession(): # Writes the response to summaryPrompt into the StudyHist
 
     print("\nExiting FOCUS...\n")
 
-
-
-# Hmm might need to multithread this or something, 
-# sensors has a inf while loop but so does GUI
-try:
+def T_Sensors():
+    try:
     Sensors.StartSensors()
     while True: 
         print(Sensors.Sense())
         time.sleep(Sensors.iterDelay)
 
-except KeyboardInterrupt: Sensors.StopSensors()
+    except KeyboardInterrupt: Sensors.StopSensors()
+
+def T_GUI():
+    import GUI # Start the GUI
 
 
+# Main 2 loops, one for sensors and 1 for the GUI
+t_sensors = threading.Thread(target=T_Sensors)
+t_GUI = threading.Thread(target=T_GUI)
 
-import GUI # Start the GUI
+t_sensors.start()
+t_GUI.start()
+
+t_sensors.join()
+t_GUI.join()
+
+print("\n\nFOCUS exiting...")
