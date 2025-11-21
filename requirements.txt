@@ -1,3 +1,16 @@
+pillow # idk where this is used tbh
+
+# PDF Viewer
 fitz
-pillow
 pymupdf
+
+
+# GazeTracker
+dlib # IDK the specific version requirement, we tried a few as the deps changed
+numpy==1.26.4
+opencv-python==4.10.0.82
+setuptools==70.0.0
+
+# FaceTracker (also requires opencv & numpy from ^)
+mediapipe
+scipy

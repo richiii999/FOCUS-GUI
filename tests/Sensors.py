@@ -43,5 +43,4 @@ try:
         print(Sense())
         time.sleep(iterDelay)
 
-finally:
-    EndStudySession()
+except KeyboardInterrupt: EndStudySession()

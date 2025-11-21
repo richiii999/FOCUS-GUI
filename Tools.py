@@ -1,12 +1,14 @@
+# Tools.py
 # String Manipulation and other useful funcs
 
-import os # file seeking
+from os import SEEK_CUR, SEEK_END # file seeking
 
 def ReadFileAsLine(f) -> str:
     s = ''
     if isinstance(f, str): # f is a file path not a file pointer
         with open(f, 'r') as f1:
             for line in f1.readlines(): s += sanitize(line).replace('\n',' ')
+    
     else: # assuming f is a file pointer
         for line in f.readlines(): s += sanitize(line).replace('\n',' ')
         
