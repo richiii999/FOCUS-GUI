@@ -5,7 +5,7 @@ import time
 import subprocess # manages subprocess I/O (ollama / webui servers, sensors, and ffmpeg)
 
 import API # Contains API calls to webui
-import Sensors # Controls the face+gaze trackers
+from modules import Sensors # Controls the face+gaze trackers
 
 def EndStudySession(): # Writes the response to summaryPrompt into the StudyHistory.txt file
     print('\nEnding study session...')
