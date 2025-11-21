@@ -1,12 +1,14 @@
+# Tools.py
 # String Manipulation and other useful funcs
 
-import os # file seeking
+from os import SEEK_CUR, SEEK_END # file seeking
 
 def ReadFileAsLine(f) -> str:
     s = ''
     if isinstance(f, str): # f is a file path not a file pointer
         with open(f, 'r') as f1:
             for line in f1.readlines(): s += sanitize(line).replace('\n',' ')
+    
     else: # assuming f is a file pointer
         for line in f.readlines(): s += sanitize(line).replace('\n',' ')
         
@@ -48,8 +50,8 @@ def FormatActions(actionsList:str) -> dict: # Takes response from SLM.GenerateAc
 def readLastLine(path): # From https://stackoverflow.com/questions/46258499/how-to-read-the-last-line-of-a-file-in-python#54278929
 with open(path, 'rb') as f:
     try: # catch OSError in case of a one line file 
-        f.seek(-2, os.SEEK_END)
-        while (f.read(1) != b'\n'): f.seek(-2, os.SEEK_CUR)
+        f.seek(-2, SEEK_END)
+        while (f.read(1) != b'\n'): f.seek(-2, SEEK_CUR)
     
     except OSError: f.seek(0)
     
