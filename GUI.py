@@ -10,7 +10,7 @@ import Tools
 from modules import RootWindow, BaseFrames, ActionButtons, ChatWindow, PDFViewer, QuizModule
 
 # Add base frames
-Base = BaseFrames.BaseFrames(root)
+Base = BaseFrames.BaseFrames(root.root)
 
 # PDF Viewer on Left, Buttons -> TopRight, Chat BottomRight
 PDFV = PDFViewer.PDFViewer(Base.L)
@@ -25,4 +25,4 @@ AB.buttons[1].bind('<ButtonPress-1>', lambda e: Chat.start_break())
 AB.buttons[2].config(text="Summary")
 AB.buttons[2].bind('<ButtonPress-1>', lambda e: Chat.send_message(Tools.ReadFileAsLine("./Prompts/SummaryAction.txt"), False))
 
-root.mainloop()
+root.root.mainloop()
