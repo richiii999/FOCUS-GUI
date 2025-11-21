@@ -1,7 +1,7 @@
 import sys
 sys.path.append(".") # Test scripts use modules too (run from toplevel tho)
 
-import Tools
+from Tools import FormatActions
 
 rawResponse = """testtesttest
 1. **Label1**: desc1desc1desc1, desc1desc1.
@@ -11,9 +11,8 @@ testtesttest
 
 testtesttest"""
 
-formattedResponse = Tools.FormatActions(rawResponse)
+formattedResponse = FormatActions(rawResponse)
 print(f"formatted=\n{formattedResponse}")
 
 print("unpacked=")
-for k,v in formattedResponse.items():
-    print(f"{k} : {v}")
+for k,v in formattedResponse.items(): print(f"{k} : {v}")

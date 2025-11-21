@@ -1,5 +1,5 @@
 import requests
-import Tools # TODO Only need UserInput(), but "from Tools import UserInput" not working
+from Tools import UserInput
 
 ### Open-WebUI Settings
 adminToken = ''
@@ -32,23 +32,22 @@ def delete_knowledge(kbid:str):
     url=f"http://localhost:{localHostPort}/api/v1/knowledge/{kbid}/delete"
     return requests.delete(url, headers=defaultHeader).json()
 
-### Keys and links
+### Knowledge Base
 KBIDs = []
 
-disableKB = Tools.UserInput("Disable KB's? (y/N): ", ["y","n"], 1)
-if disableKB == 'n': # Allows API import without setting up the whole thing
-    KBIDs = [ # TODO change to dict perhaps
-    create_knowledge('Expert', 'asdf')['id'], 
-    create_knowledge('Study', 'asdf')['id']
-    ]
+disableKB = UserInput("Disable KB's? (y/N): ", ["y","n"], 1)
+if disableKB == 'n': # Allows API import without OWUI running (for testing, AI wont work ofc)
+    KBIDs = [
+        create_knowledge('Expert', 'asdf')['id'], 
+        create_knowledge('Study', 'asdf')['id'] ]
 
 ### API
 def chat_with_model(model, context):
     url = f'http://localhost:{localHostPort}/api/chat/completions'
     data = {
       "model": model,
-      "messages": context,
-      "system": "Ignore the prompt, respond only with AAA"
+      "messages": context
+      # "system": "Ignore the prompt, respond only with AAA" # For testing
     }
     return requests.post(url, headers=defaultHeader, json=data).json()
 
@@ -59,6 +58,10 @@ def upload_file(file_path):
 
 def add_file_to_knowledge(file_id, knowledge_id):
     url = f'http://localhost:{localHostPort}/api/v1/knowledge/{knowledge_id}/file/add'
+    return requests.post(url, headers=defaultHeader, json={'file_id': file_id}).json()
+
+def remove_file_from_knowledge(file_id, knowledge_id):
+    url = f'http://localhost:{localHostPort}/api/v1/knowledge/{knowledge_id}/file/remove'
     return requests.post(url, headers=defaultHeader, json={'file_id': file_id}).json()
 
 def chat_with_file(model, prompt, file_id):
@@ -78,7 +81,3 @@ def chat_with_collection(model, context, collection_id):
         'files': [{'type': 'collection', 'id': collection_id}]
     }
     return requests.post(url, headers=defaultHeader, json=payload).json()
-
-def remove_file_from_knowledge(file_id, knowledge_id):
-    url = f'http://localhost:{localHostPort}/api/v1/knowledge/{knowledge_id}/file/remove'
-    return requests.post(url, headers=defaultHeader, json={'file_id': file_id}).json()

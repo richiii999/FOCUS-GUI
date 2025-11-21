@@ -30,7 +30,7 @@ Chat = ChatWindow.ChatWindow(Base.BR, PDFV) # Connects to PDFV to access the pag
 
 # Action button bindings
 AB.buttons[0].config(text="Quiz")
-AB.buttons[0].bind('<ButtonPress-1>', lambda e: QuizModule.QuizWindow(Chat, SLMResponse.Chatting(Tools.ReadFileAsLine("./Prompts/QuizPrompt.txt"))))
+AB.buttons[0].bind('<ButtonPress-1>', lambda e: QuizModule.QuizWindow(Chat, SLMResponse.PromptAI(Tools.ReadFileAsLine("./Prompts/QuizPrompt.txt"))))
 AB.buttons[1].config(text="Break")
 AB.buttons[1].bind('<ButtonPress-1>', lambda e: Chat.start_break())
 AB.buttons[2].config(text="Summary")

@@ -229,7 +229,7 @@ class ChatWindow(tk.Frame):
         if message.strip(): # Non empty message
             if visible: self._insert_user(message)
 
-            response = SLMResponse.Chatting(message)
+            response = SLMResponse.PromptAI(message)
             self._insert_ai(response)
             self.message_input.delete(0, tk.END)
 
