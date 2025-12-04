@@ -16,7 +16,7 @@ class ActionButtons(tk.Frame):
             currCol = i%perRow
             # print(f" creating button_{i} @ {currRow},{currCol}")
 
-            self.buttons.append(tk.Button(self, text=f"Button_{str(i)}", bg="red", relief='ridge', borderwidth=3))
+            self.buttons.append(tk.Button(self, text=f"Button_{str(i)}", bg="Grey", relief='ridge', borderwidth=3))
             
             self.buttons[i].grid(column=currCol, row=currRow, sticky='news') # Button Placement in Grid
             self.columnconfigure(currCol, weight=1) # Grid resize to fit new button

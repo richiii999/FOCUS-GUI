@@ -63,6 +63,9 @@ class QuizWindow(tk.Toplevel):
             # If the line contains the correct answer, capture it
             elif line.lower().startswith("correct answer:"):
                 correct_answer = line.split(":")[1].strip().lower()  # Extract the letter of the correct answer
+                
+                # Remove the answer prefix (e.g., "c) ")
+                correct_answer = correct_answer.split(')')[1].strip()
 
         # Add the last question if it exists
         if current_question is not None:
@@ -72,7 +75,6 @@ class QuizWindow(tk.Toplevel):
                 "correct_answer": correct_answer
             })
         
-        print(quiz_text)
         print("Question and Answers: ")
         print(questions_and_answers)
         return questions_and_answers
@@ -118,7 +120,7 @@ class QuizWindow(tk.Toplevel):
 
         # Change the background color of the clicked button
         for button in self.answer_buttons:
-            button.config(bg="lightgray")  # Reset all buttons to default color
+            button.config(bg="lightgray")  # Reset all buttons to light gray color
         self.focus_button = [button for button in self.answer_buttons if button.cget("text") == answer][0]
         self.focus_button.config(bg="lightblue")  # Highlight the clicked button
 
@@ -128,20 +130,17 @@ class QuizWindow(tk.Toplevel):
             messagebox.showwarning("No Answer", "Please select an answer before submitting.")
             return
 
+        # Get the correct answer from the question data (stored without the option prefix)
         correct_answer = self.questions_and_answers[self.current_question_index]["correct_answer"]
 
-        # Save the user's answer and whether it was correct
-        self.user_answers.append(self.selected_answer)
-        self.user_results.append(self.selected_answer.lower() == correct_answer)
+        # Remove the option letter (e.g., "c)") from the selected answer (e.g., "c) 32")
+        selected_answer = self.selected_answer.split(')')[1].strip() if ')' in self.selected_answer else self.selected_answer.strip()
 
-        # Check if result_label exists before attempting to update it
-        if hasattr(self, 'result_label') and self.result_label.winfo_exists():
-            if self.selected_answer.lower() == correct_answer:
-                self.result_label.config(text="Correct!", fg="green")
-            else:
-                self.result_label.config(text=f"Wrong! Correct answer: {correct_answer}", fg="red")
+        # Check if the selected answer matches the correct answer
+        if selected_answer == correct_answer:
+            self.result_label.config(text="Correct!", fg="green")
         else:
-            print("result_label is not available!")
+            self.result_label.config(text=f"Wrong! Correct answer: {correct_answer}", fg="red")
 
         # Wait a moment before moving to the next question
         self.after(1000, self.next_question)
