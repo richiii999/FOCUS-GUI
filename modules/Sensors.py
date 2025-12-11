@@ -4,7 +4,7 @@
 import time
 import subprocess # manages subprocess I/O (ollama / webui servers, sensors, and ffmpeg)
 
-startTime, initDelay, iterDelay = time.time(), 3, 5 # Timing delays
+startTime, initDelay, iterDelay = time.time(), 5, 10 # Timing delays
 
 ffmpeg = None # Set on StartSensors()
 procs = { # {path : Log file}, sensor output is periodically read from here and given to the AI

@@ -25,4 +25,19 @@ AB.buttons[1].bind('<ButtonPress-1>', lambda e: Chat.start_break())
 AB.buttons[2].config(text="Summary")
 AB.buttons[2].bind('<ButtonPress-1>', lambda e: Chat.send_message(Tools.ReadFileAsLine("./Prompts/SummaryAction.txt"), False))
 
+# Dynamic Action button
+rawResponse = SLMResponse.GenerateActions(3,False) # Generate 3 actions
+
+formattedResponse = Tools.FormatActions(rawResponse) # Put them in a dict
+print(f"Generated Actions:\n{rawResponse}")
+
+from random import randrange
+
+for i in range(3): # Use all 3 actions in the buttons
+    label = list(formattedResponse)[i]
+    desc = list(formattedResponse.values())[i]
+    AB.UpdateButton(3+i, label, lambda e: Chat.send_message("Instruct the user to perform the following task: " + desc, False))
+    # print(f"{i} = {label} {desc}")
+
+
 RootWindow.root.mainloop()

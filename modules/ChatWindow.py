@@ -227,6 +227,7 @@ class ChatWindow(tk.Frame):
     def send_message(self, message, visible=True):
         SLMResponse.StartChatting()
         if message.strip(): # Non empty message
+            # print(f"message sent to AI: {message}")
             if visible: self._insert_user(message)
 
             response = SLMResponse.PromptAI(message)
