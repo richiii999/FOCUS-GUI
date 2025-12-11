@@ -49,6 +49,12 @@ def GenerateActions(numActions:int=3, formatted:bool=False):
     if formatted, returns the label and desc in a dict. 
     otherwise returns the raw response as a str"""
     
+    print("Uploading files...") # hardcoded for test
+    f1 = API.upload_file("./KB/ADHD2.pdf")
+    f2 = API.upload_file("./KB/TeachingADHD.pdf")
+    API.add_file_to_knowledge(f1, API.KBIDs[0])
+    API.add_file_to_knowledge(f2, API.KBIDs[0])
+
     print("Getting action space via RAG...")
     with open('./Prompts/Para/GenerateActions.txt', 'r') as f1:
         prompt = Tools.ReadFileAsLine(f1)
