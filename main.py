@@ -7,6 +7,7 @@ import threading # Multithread the sensors and GUI separately
 
 import API # Contains API calls to webui
 from modules import Sensors # Controls the face+gaze trackers
+import SLMResponse # Model controls
 
 def EndStudySession(): # Writes the response to summaryPrompt into the StudyHistory.txt file
     print('\nEnding study session...')
@@ -31,25 +32,33 @@ def EndStudySession(): # Writes the response to summaryPrompt into the StudyHist
 
     print("\nExiting FOCUS...\n")
 
-def T_Sensors():
-    try:
-        Sensors.StartSensors()
-        while True: 
-            print(Sensors.Sense())
-            time.sleep(Sensors.iterDelay)
-
-    except KeyboardInterrupt: Sensors.StopSensors()
 
 def T_GUI():
     import GUI # Start the GUI
 
+def T_Sensors():
+    try:
+        Sensors.StartSensors()
+        while True: 
+            sensorData = Sensors.Sense()
+            print(sensorData)
+
+            # detect = SLMResponse.DistractionDetection(sensorData)
+
+            # if detect == 'yes': 
+            #     GUI.chat._insert_ai("You seem to be distracted, perhaps try one of the actions to get back on track.")
+
+            time.sleep(Sensors.iterDelay)
+
+    except KeyboardInterrupt: Sensors.StopSensors()
 
 # Main 2 loops, one for sensors and 1 for the GUI
 t_sensors = threading.Thread(target=T_Sensors)
 t_GUI = threading.Thread(target=T_GUI)
 
-t_sensors.start()
 t_GUI.start()
+input("Press any key to continue")
+t_sensors.start()
 
 t_sensors.join()
 t_GUI.join()
