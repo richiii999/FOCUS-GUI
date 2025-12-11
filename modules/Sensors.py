@@ -24,7 +24,7 @@ def StopSensors():
     for f in procs.values(): f.close() 
 
 def Sense() -> str: # Gather output from the sensors
-    sensorData = f"Time = {int(time.time() - startTime)} minutes, Aggregated Sensor data:\n"
+    sensorData = f"Time = {int(time.time() - startTime)}, aggregated Sensor data:\n"
     for f in procs.values(): # Get most recent output per sensor 
         f.seek(0)
         sensorData += f.readlines()[-1]

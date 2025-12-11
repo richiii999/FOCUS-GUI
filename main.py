@@ -43,10 +43,13 @@ def T_Sensors():
             sensorData = Sensors.Sense()
             print(sensorData)
 
-            # detect = SLMResponse.DistractionDetection(sensorData)
+            detect = SLMResponse.DistractionDetection(sensorData)
 
             # if detect == 'yes': 
             #     GUI.chat._insert_ai("You seem to be distracted, perhaps try one of the actions to get back on track.")
+
+            if detect == 'yes': # Temp for testing, since we cant call the chat func from here
+                print("Distraction detected!")
 
             time.sleep(Sensors.iterDelay)
 
@@ -57,7 +60,7 @@ t_sensors = threading.Thread(target=T_Sensors)
 t_GUI = threading.Thread(target=T_GUI)
 
 t_GUI.start()
-input("Press any key to continue")
+input("Press Enter to continue")
 t_sensors.start()
 
 t_sensors.join()
