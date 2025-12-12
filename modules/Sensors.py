@@ -7,6 +7,8 @@ import subprocess # manages subprocess I/O (ollama / webui servers, sensors, and
 startTime, initDelay, iterDelay = time.time(), 5, 10 # Timing delays
 
 ffmpeg = None # Set on StartSensors()
+sensors = None # BUG: suddenly stopped working idk
+
 procs = { # {path : Log file}, sensor output is periodically read from here and given to the AI
     'python ./Sensors/PythonFaceTracker/main.py'    : open('./SensorLogs/faceTracker.txt', 'r+'),
     'python ./Sensors/PythonGazeTracker/example.py' : open('./SensorLogs/gazeTracker.txt', 'r+')
@@ -18,9 +20,11 @@ for f in procs.values():
 
 def StopSensors():
     global ffmpeg
+    global sensors
     print('Stopping sensors...')
     if ffmpeg is not None: ffmpeg.terminate()
-    for s in sensors[1:]: s.terminate()
+    if sensors is not None: 
+        for s in sensors[1:]: s.terminate()
     for f in procs.values(): f.close() 
 
 def Sense() -> str: # Gather output from the sensors

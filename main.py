@@ -17,14 +17,18 @@ def EndStudySession(): # Writes the response to summaryPrompt into the StudyHist
 
     with open('./KB/StudyHistory.txt', 'a') as f1, open('./Prompts/SummaryPrompt.txt', 'r') as p: 
         print('Generating Summary...')
-        f1.write('\n' + SLMResponse.PromptAI(Tools.ReadFileAsLine(p))) # Prompt Summary, append it to history file
+        summary = SLMResponse.PromptAI(Tools.ReadFileAsLine(p))
+        f1.write('\n' + summary) # Prompt Summary, append it to history file
+        print(summary)
     with open('./KB/StudyHistory.txt', 'r') as f1, open('./KB/Knowledge.txt', 'w') as f2, open('./Prompts/KnowledgePrompt.txt', 'r') as p:
-        global context
-        context = [] # reset the context
+        # global context
+        # context = [] # reset the context
 
         f2.truncate(0) # Replace old knowledge with new knowledge
         print('Generating Knowledge...')
-        f2.write(SLMResponse.PromptAI(Tools.ReadFileAsLine(p) + Tools.ReadFileAsLine(f1)))
+        knowledge = SLMResponse.PromptAI(Tools.ReadFileAsLine(f1) + Tools.ReadFileAsLine(p))
+        f2.write(knowledge)
+        print(knowledge)
 
     # print('Clearing old knowledge base files...')
     # for i in API.KBIDs: API.delete_knowledge(i) # Delete knowledge bases
@@ -54,7 +58,7 @@ def T_Sensors():
         time.sleep(Sensors.iterDelay)
 
 
-# Main 2 loops, one for sensors and 1 for the GUI
+# Main 2 threads, one for sensors and 1 for the GUI
 try: 
     t_sensors = threading.Thread(target=T_Sensors)
     t_GUI = threading.Thread(target=T_GUI)
