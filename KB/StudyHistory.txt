@@ -350,3 +350,18 @@ If the user decides to avoid taking a specific action and continues to be distra
 * Break up study sessions into shorter intervals with breaks in between.
 
 Please note that the student's focus and distractions may change throughout the duration of this study session.
+START SUMMARY
+
+Unfortunately, there is no information available in the provided context about sensor data, study session length, topic of study, or actions suggested to reduce distraction.
+
+END SUMMARY
+END SUMMARY
+
+Unfortunately, the provided context does not include any information about sensor data, study session length, topic of study, or actions suggested to reduce distraction. The context is limited to sources discussing types of power and influence.
+
+If you could provide more context or clarify what type of sensor data was used, I would be happy to try and assist further.
+END SUMMARY
+
+Unfortunately, the context provided does not contain information about sensor data, study sessions, or specific actions suggested to reduce distraction. The provided text is related to organizational power and influence, but it does not offer any insights into a student's study session.
+
+If you could provide more context or clarify what type of sensor data was collected during the study session, I would be happy to help summarize the focus of the student.

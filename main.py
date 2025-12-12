@@ -8,6 +8,7 @@ import threading # Multithread the sensors and GUI separately
 import API # Contains API calls to webui
 from modules import Sensors # Controls the face+gaze trackers
 import SLMResponse # Model controls
+import Tools
 
 def EndStudySession(): # Writes the response to summaryPrompt into the StudyHistory.txt file
     print('\nEnding study session...')
@@ -16,14 +17,14 @@ def EndStudySession(): # Writes the response to summaryPrompt into the StudyHist
 
     with open('./KB/StudyHistory.txt', 'a') as f1, open('./Prompts/SummaryPrompt.txt', 'r') as p: 
         print('Generating Summary...')
-        f1.write('\n' + PromptAI(Tools.ReadFileAsLine(p))) # Prompt Summary, append it to history file
-    with open('./KB/StudyHistory.txt', 'r') as f1, open('./KB/Knowledge.txt', 'w') as f2, open('./LLM/KnowledgePrompt.txt', 'r') as p:
+        f1.write('\n' + SLMResponse.PromptAI(Tools.ReadFileAsLine(p))) # Prompt Summary, append it to history file
+    with open('./KB/StudyHistory.txt', 'r') as f1, open('./KB/Knowledge.txt', 'w') as f2, open('./Prompts/KnowledgePrompt.txt', 'r') as p:
         global context
         context = [] # reset the context
 
         f2.truncate(0) # Replace old knowledge with new knowledge
         print('Generating Knowledge...')
-        f2.write(PromptAI(Tools.ReadFileAsLine(p) + Tools.ReadFileAsLine(f1)))
+        f2.write(SLMResponse.PromptAI(Tools.ReadFileAsLine(p) + Tools.ReadFileAsLine(f1)))
 
     # print('Clearing old knowledge base files...')
     # for i in API.KBIDs: API.delete_knowledge(i) # Delete knowledge bases

@@ -19,15 +19,16 @@ for f in procs.values():
 def StopSensors():
     global ffmpeg
     print('Stopping sensors...')
-    ffmpeg.terminate()
+    if ffmpeg is not None: ffmpeg.terminate()
     for s in sensors[1:]: s.terminate()
     for f in procs.values(): f.close() 
 
 def Sense() -> str: # Gather output from the sensors
     sensorData = f"Time = {int(time.time() - startTime)}, aggregated Sensor data:\n"
     for f in procs.values(): # Get most recent output per sensor 
-        f.seek(0)
-        sensorData += f.readlines()[-1]
+        if not f.closed:
+            f.seek(0)
+            sensorData += f.readlines()[-1]
     return sensorData
 
 def StartSensors():
