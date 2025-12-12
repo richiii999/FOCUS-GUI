@@ -14,7 +14,7 @@ def EndStudySession(): # Writes the response to summaryPrompt into the StudyHist
 
     Sensors.StopSensors()
 
-    with open('./KB/StudyHistory.txt', 'a') as f1, open('./LLM/SummaryPrompt.txt', 'r') as p: 
+    with open('./KB/StudyHistory.txt', 'a') as f1, open('./Prompts/SummaryPrompt.txt', 'r') as p: 
         print('Generating Summary...')
         f1.write('\n' + PromptAI(Tools.ReadFileAsLine(p))) # Prompt Summary, append it to history file
     with open('./KB/StudyHistory.txt', 'r') as f1, open('./KB/Knowledge.txt', 'w') as f2, open('./LLM/KnowledgePrompt.txt', 'r') as p:
@@ -33,39 +33,39 @@ def EndStudySession(): # Writes the response to summaryPrompt into the StudyHist
     print("\nExiting FOCUS...\n")
 
 
-def T_GUI():
-    import GUI # Start the GUI
+def T_GUI(): import GUI # Start the GUI
 
 def T_Sensors():
-    try:
-        Sensors.StartSensors()
-        while True: 
-            sensorData = Sensors.Sense()
-            print(sensorData)
+    Sensors.StartSensors()
 
-            detect = SLMResponse.DistractionDetection(sensorData)
+    while True: # Main sensor loop
+        sensorData = Sensors.Sense()
+        print(sensorData)
 
-            # if detect == 'yes': 
-            #     GUI.chat._insert_ai("You seem to be distracted, perhaps try one of the actions to get back on track.")
+        detect = SLMResponse.DistractionDetection(sensorData)
 
-            if detect == 'yes': # Temp for testing, since we cant call the chat func from here
-                print("Distraction detected!")
+        # if detect == 'yes': 
+        #     GUI.chat._insert_ai("You seem to be distracted, perhaps try one of the actions to get back on track.")
 
-            time.sleep(Sensors.iterDelay)
+        if detect == 'yes': # Temp for testing, since we cant call the chat func from here
+            print("Distraction detected!")
 
-    except KeyboardInterrupt: 
-        EndStudySession()
+        time.sleep(Sensors.iterDelay)
 
 
 # Main 2 loops, one for sensors and 1 for the GUI
-t_sensors = threading.Thread(target=T_Sensors)
-t_GUI = threading.Thread(target=T_GUI)
+try: 
+    t_sensors = threading.Thread(target=T_Sensors)
+    t_GUI = threading.Thread(target=T_GUI)
 
-t_GUI.start()
-input("Press Enter to continue")
-t_sensors.start()
+    t_GUI.start()
+    input("Press Enter to continue")
+    t_sensors.start()
 
-t_sensors.join()
-t_GUI.join()
+    t_GUI.join()
+    t_sensors.join()
+
+except KeyboardInterrupt:
+    EndStudySession()
 
 print("\n\nFOCUS exiting...")
